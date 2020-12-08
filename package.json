@@ -1,6 +1,6 @@
 {
     "name": "@vex-chat/crypto-js",
-    "version": "0.7.2",
+    "version": "0.7.3",
     "description": "Crypto functions for vex",
     "main": "./dist/index.js",
     "author": "Extra <extrahash@protonmail.com>",
