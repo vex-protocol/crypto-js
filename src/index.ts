@@ -1,11 +1,11 @@
 import { KeyRingUtils } from "@extrahash/keyring";
+import { XTypes } from "@vex-chat/types-js";
 import * as bip39 from "bip39";
 import createHmac from "create-hmac";
 import ed2curve from "ed2curve";
 import hkdf from "futoin-hkdf";
 import msgpack from "msgpack-lite";
 import nacl from "tweetnacl";
-import { XTypes } from "xchat-types";
 
 export const XKeyConvert = ed2curve;
 

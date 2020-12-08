@@ -111,6 +111,13 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@vex-chat/types-js@^0.7.0":
+  version "0.7.0"
+  resolved "https://npm.pkg.github.com/download/@vex-chat/types-js/0.7.0/08f6f6601ea5f8881a7729153f0526fbde6c739c762d166da9b9abe2fe11b88b#4333c1ef06f9f1388f567eb49fca30e5c69c32e5"
+  integrity sha512-Qvp6LcQ6hlgTM+RAHr7oVok/LYVnTxWw7DpAMtYpZWygndCTTYUydz92mNp7DpQ2rtrSfJHn6KQYxdmMbh/AbQ==
+  dependencies:
+    tweetnacl "^1.0.3"
+
 aggregate-error@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/aggregate-error/-/aggregate-error-3.1.0.tgz#92670ff50f5359bdb7a3e0d40d0ec30c5737687a"
@@ -1579,10 +1586,3 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
-
-xchat-types@^0.6.7:
-  version "0.6.7"
-  resolved "https://registry.yarnpkg.com/xchat-types/-/xchat-types-0.6.7.tgz#1460b1d3fd14b0adfc54e29546641490ae20bccb"
-  integrity sha512-sSGrTCO08fQGd1uBdUD34Syv0y/gGx/feFBt/hGePVnRfgDNUWZZAUlIqzfW6JOoSnUnZmUNYimSL0C1HCOUBA==
-  dependencies:
-    tweetnacl "^1.0.3"
