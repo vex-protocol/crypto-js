@@ -1,6 +1,6 @@
 {
     "name": "crypto-js",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "description": "Crypto functions for vex",
     "main": "./dist/index.js",
     "author": "Extra <extrahash@protonmail.com>",
