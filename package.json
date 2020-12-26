@@ -1,6 +1,6 @@
 {
     "name": "@vex-chat/crypto-js",
-    "version": "0.7.4",
+    "version": "0.7.5",
     "description": "Crypto functions for vex",
     "main": "./dist/index.js",
     "author": "Extra <extrahash@protonmail.com>",
@@ -37,7 +37,7 @@
         "@types/create-hmac": "^1.1.0",
         "@types/ed2curve": "^0.2.2",
         "@types/msgpack-lite": "^0.1.7",
-        "@vex-chat/types-js": "^0.7.0",
+        "@vex-chat/types-js": "^0.7.18",
         "bip39": "^3.0.3",
         "create-hmac": "^1.1.7",
         "ed2curve": "^0.3.0",
