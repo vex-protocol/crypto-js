@@ -37,7 +37,7 @@
         "@types/create-hmac": "^1.1.0",
         "@types/ed2curve": "^0.2.2",
         "@types/msgpack-lite": "^0.1.7",
-        "@vex-chat/types-js": "^0.7.18",
+        "@vex-chat/types": "^0.7.21",
         "bip39": "^3.0.3",
         "create-hmac": "^1.1.7",
         "ed2curve": "^0.3.0",
