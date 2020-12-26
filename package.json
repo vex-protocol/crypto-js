@@ -1,5 +1,5 @@
 {
-    "name": "@vex-chat/crypto-js",
+    "name": "@vex-chat/crypto",
     "version": "0.7.8",
     "description": "Crypto functions for vex",
     "main": "./dist/index.js",
