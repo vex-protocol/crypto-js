@@ -1,5 +1,5 @@
 import { KeyRingUtils } from "@extrahash/keyring";
-import { XTypes } from "@vex-chat/types-js";
+import { XTypes } from "@vex-chat/types";
 import * as bip39 from "bip39";
 import createHmac from "create-hmac";
 import ed2curve from "ed2curve";

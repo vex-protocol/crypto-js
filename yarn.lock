@@ -111,10 +111,10 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-"@vex-chat/types-js@^0.7.0":
-  version "0.7.0"
-  resolved "https://npm.pkg.github.com/download/@vex-chat/types-js/0.7.0/08f6f6601ea5f8881a7729153f0526fbde6c739c762d166da9b9abe2fe11b88b#4333c1ef06f9f1388f567eb49fca30e5c69c32e5"
-  integrity sha512-Qvp6LcQ6hlgTM+RAHr7oVok/LYVnTxWw7DpAMtYpZWygndCTTYUydz92mNp7DpQ2rtrSfJHn6KQYxdmMbh/AbQ==
+"@vex-chat/types@^0.7.21":
+  version "0.7.21"
+  resolved "https://registry.yarnpkg.com/@vex-chat/types/-/types-0.7.21.tgz#64631ba2ac7edd5dc0ce9d32d15f76f164715a43"
+  integrity sha512-5JceTul3ei+j9t+QcLe1arKyuMDfMNwpJz1LaZ6ncWvKi6DeBrI3lHrzVZSN6uCXCrI1apB7rqCl8WxyXCkHNA==
   dependencies:
     tweetnacl "^1.0.3"
 
