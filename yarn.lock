@@ -111,17 +111,17 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-<<<<<<< HEAD
+"@types/pbkdf2@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/pbkdf2/-/pbkdf2-3.1.0.tgz#039a0e9b67da0cdc4ee5dab865caa6b267bb66b1"
+  integrity sha512-Cf63Rv7jCQ0LaL8tNXmEyqTHuIJxRdlS5vMh1mj5voN4+QFhVZnlZruezqpWYDiJ8UTzhP0VmeLXCmBk66YrMQ==
+  dependencies:
+    "@types/node" "*"
+
 "@vex-chat/types@^0.7.21":
   version "0.7.21"
   resolved "https://registry.yarnpkg.com/@vex-chat/types/-/types-0.7.21.tgz#64631ba2ac7edd5dc0ce9d32d15f76f164715a43"
   integrity sha512-5JceTul3ei+j9t+QcLe1arKyuMDfMNwpJz1LaZ6ncWvKi6DeBrI3lHrzVZSN6uCXCrI1apB7rqCl8WxyXCkHNA==
-=======
-"@vex-chat/types-js@^0.7.0":
-  version "0.7.2"
-  resolved "https://npm.pkg.github.com/download/@vex-chat/types-js/0.7.2/8762c145fb16b6e27c68744d6a2ff3ee69a139fe01b757a2c09cf66685daa3d7#bdb3587b35279789051baf54e4a96c72e1144442"
-  integrity sha512-p+WHBnkUtDEysKGweq/4OxatVMC7dA9rVjX2f43kpwNuQKwk00dBXMwp20i6oo6h5zkBpd4DAdRQiryenmmD/A==
->>>>>>> dea2c6751b1886704c8f901b87ad0506c127ae9a
   dependencies:
     tweetnacl "^1.0.3"
 
@@ -1180,7 +1180,7 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pbkdf2@^3.0.9:
+pbkdf2@^3.0.9, pbkdf2@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.1.1.tgz#cb8724b0fada984596856d1a6ebafd3584654b94"
   integrity sha512-4Ejy1OPxi9f2tt1rRV7Go7zmfDQ+ZectEQz3VGUQhgq62HtIRPDyG/JtnwIxs6x3uNMwo2V7q1fMvKjb+Tnpqg==
