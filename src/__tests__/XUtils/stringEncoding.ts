@@ -32,8 +32,10 @@ test("Encodes and decodes utf8", () => {
         "�>M�)Ik7:�L?\x1C=�\x00��#�\x19H�ַ KL9/\x1D",
         "��\x0E\x0F�e\x17aj*ڷ���S4��i�BsOI�`����U",
         "���d8\x7F���.��,9ZmIu\x02�Jt��Uz̀��\x14",
+        // tslint:disable-next-line: quotemark
         '��L��:�\x02��\x1E\\\x04�_jw��v�������\x01�"\x1C�',
         "\x05;�\x01!�\x0F�-�֛��ʨ�`��\x14�\x03����d�~�o",
+        // tslint:disable-next-line: quotemark
         '\x02\x13\x12l��"`ϼ�"\x17�D��r��0\x00!�4V�Wi\x1B\x17',
         "��y\x1FS�\\�p�4���%Vt��\n�?vHGg,`b%(\f",
         "<b�N�N!FG�-�*�I�Z����\x0F\x0B�{ʌ��(.",
