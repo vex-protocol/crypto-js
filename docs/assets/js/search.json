@@ -288,112 +288,700 @@
             "url": "modules/_index_.html#xencode",
             "classes": "tsd-kind-function tsd-parent-kind-module",
             "parent": "\"index\""
+        },
+        {
+            "id": 35,
+            "kind": 1,
+            "name": "\"__tests__/XKeyConvert\"",
+            "url": "modules/___tests___xkeyconvert_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 36,
+            "kind": 2097152,
+            "name": "ed25519Keys",
+            "url": "modules/___tests___xkeyconvert_.html#ed25519keys",
+            "classes": "tsd-kind-object-literal tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\""
+        },
+        {
+            "id": 37,
+            "kind": 32,
+            "name": "public",
+            "url": "modules/___tests___xkeyconvert_.html#ed25519keys.public-1",
+            "classes": "tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\".ed25519Keys"
+        },
+        {
+            "id": 38,
+            "kind": 32,
+            "name": "private",
+            "url": "modules/___tests___xkeyconvert_.html#ed25519keys.private-1",
+            "classes": "tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\".ed25519Keys"
+        },
+        {
+            "id": 39,
+            "kind": 2097152,
+            "name": "convertedX25519Keys",
+            "url": "modules/___tests___xkeyconvert_.html#convertedx25519keys",
+            "classes": "tsd-kind-object-literal tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\""
+        },
+        {
+            "id": 40,
+            "kind": 32,
+            "name": "public",
+            "url": "modules/___tests___xkeyconvert_.html#convertedx25519keys.public",
+            "classes": "tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\".convertedX25519Keys"
+        },
+        {
+            "id": 41,
+            "kind": 32,
+            "name": "private",
+            "url": "modules/___tests___xkeyconvert_.html#convertedx25519keys.private",
+            "classes": "tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\".convertedX25519Keys"
+        },
+        {
+            "id": 42,
+            "kind": 64,
+            "name": "keyPairToString",
+            "url": "modules/___tests___xkeyconvert_.html#keypairtostring",
+            "classes": "tsd-kind-function tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\""
+        },
+        {
+            "id": 43,
+            "kind": 64,
+            "name": "keyPairFromString",
+            "url": "modules/___tests___xkeyconvert_.html#keypairfromstring",
+            "classes": "tsd-kind-function tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XKeyConvert\""
+        },
+        {
+            "id": 44,
+            "kind": 1,
+            "name": "\"__tests__/xConcat\"",
+            "url": "modules/___tests___xconcat_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 45,
+            "kind": 1,
+            "name": "\"__tests__/xDH\"",
+            "url": "modules/___tests___xdh_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 46,
+            "kind": 1,
+            "name": "\"__tests__/xEncode\"",
+            "url": "modules/___tests___xencode_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 47,
+            "kind": 1,
+            "name": "\"__tests__/xHMAC\"",
+            "url": "modules/___tests___xhmac_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 48,
+            "kind": 1,
+            "name": "\"__tests__/xMnemonic\"",
+            "url": "modules/___tests___xmnemonic_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 49,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/bytesEqual\"",
+            "url": "modules/___tests___xutils_bytesequal_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 50,
+            "kind": 32,
+            "name": "bytesEqual",
+            "url": "modules/___tests___xutils_bytesequal_.html#bytesequal",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/bytesEqual\""
+        },
+        {
+            "id": 51,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/emptyHeader\"",
+            "url": "modules/___tests___xutils_emptyheader_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 52,
+            "kind": 32,
+            "name": "emptyHeader",
+            "url": "modules/___tests___xutils_emptyheader_.html#emptyheader",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/emptyHeader\""
+        },
+        {
+            "id": 53,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/keyFileFunctions\"",
+            "url": "modules/___tests___xutils_keyfilefunctions_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 54,
+            "kind": 32,
+            "name": "saveKeyFile",
+            "url": "modules/___tests___xutils_keyfilefunctions_.html#savekeyfile",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/keyFileFunctions\""
+        },
+        {
+            "id": 55,
+            "kind": 32,
+            "name": "loadKeyFile",
+            "url": "modules/___tests___xutils_keyfilefunctions_.html#loadkeyfile",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/keyFileFunctions\""
+        },
+        {
+            "id": 56,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/numberToUint8Arr\"",
+            "url": "modules/___tests___xutils_numbertouint8arr_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 57,
+            "kind": 32,
+            "name": "numberToUint8Arr",
+            "url": "modules/___tests___xutils_numbertouint8arr_.html#numbertouint8arr",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/numberToUint8Arr\""
+        },
+        {
+            "id": 58,
+            "kind": 32,
+            "name": "bytesEqual",
+            "url": "modules/___tests___xutils_numbertouint8arr_.html#bytesequal",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/numberToUint8Arr\""
+        },
+        {
+            "id": 59,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/packMessage\"",
+            "url": "modules/___tests___xutils_packmessage_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 60,
+            "kind": 32,
+            "name": "packMessage",
+            "url": "modules/___tests___xutils_packmessage_.html#packmessage",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/packMessage\""
+        },
+        {
+            "id": 61,
+            "kind": 32,
+            "name": "emptyHeader",
+            "url": "modules/___tests___xutils_packmessage_.html#emptyheader",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/packMessage\""
+        },
+        {
+            "id": 62,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/stringEncoding\"",
+            "url": "modules/___tests___xutils_stringencoding_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 63,
+            "kind": 32,
+            "name": "encodeHex",
+            "url": "modules/___tests___xutils_stringencoding_.html#encodehex",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\""
+        },
+        {
+            "id": 64,
+            "kind": 32,
+            "name": "decodeHex",
+            "url": "modules/___tests___xutils_stringencoding_.html#decodehex",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\""
+        },
+        {
+            "id": 65,
+            "kind": 32,
+            "name": "encodeUTF8",
+            "url": "modules/___tests___xutils_stringencoding_.html#encodeutf8",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\""
+        },
+        {
+            "id": 66,
+            "kind": 65536,
+            "name": "__type",
+            "url": "modules/___tests___xutils_stringencoding_.html#encodeutf8.__type-3",
+            "classes": "tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\".encodeUTF8"
+        },
+        {
+            "id": 67,
+            "kind": 32,
+            "name": "decodeUTF8",
+            "url": "modules/___tests___xutils_stringencoding_.html#decodeutf8",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\""
+        },
+        {
+            "id": 68,
+            "kind": 65536,
+            "name": "__type",
+            "url": "modules/___tests___xutils_stringencoding_.html#decodeutf8.__type-1",
+            "classes": "tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\".decodeUTF8"
+        },
+        {
+            "id": 69,
+            "kind": 32,
+            "name": "encodeBase64",
+            "url": "modules/___tests___xutils_stringencoding_.html#encodebase64",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\""
+        },
+        {
+            "id": 70,
+            "kind": 65536,
+            "name": "__type",
+            "url": "modules/___tests___xutils_stringencoding_.html#encodebase64.__type-2",
+            "classes": "tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\".encodeBase64"
+        },
+        {
+            "id": 71,
+            "kind": 32,
+            "name": "decodeBase64",
+            "url": "modules/___tests___xutils_stringencoding_.html#decodebase64",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\""
+        },
+        {
+            "id": 72,
+            "kind": 65536,
+            "name": "__type",
+            "url": "modules/___tests___xutils_stringencoding_.html#decodebase64.__type",
+            "classes": "tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/stringEncoding\".decodeBase64"
+        },
+        {
+            "id": 73,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/uint8ArrToNumber\"",
+            "url": "modules/___tests___xutils_uint8arrtonumber_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 74,
+            "kind": 32,
+            "name": "uint8ArrToNumber",
+            "url": "modules/___tests___xutils_uint8arrtonumber_.html#uint8arrtonumber",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/uint8ArrToNumber\""
+        },
+        {
+            "id": 75,
+            "kind": 32,
+            "name": "bytesEqual",
+            "url": "modules/___tests___xutils_uint8arrtonumber_.html#bytesequal",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/uint8ArrToNumber\""
+        },
+        {
+            "id": 76,
+            "kind": 1,
+            "name": "\"__tests__/XUtils/unpackMessage\"",
+            "url": "modules/___tests___xutils_unpackmessage_.html",
+            "classes": "tsd-kind-module"
+        },
+        {
+            "id": 77,
+            "kind": 32,
+            "name": "unpackMessage",
+            "url": "modules/___tests___xutils_unpackmessage_.html#unpackmessage",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/unpackMessage\""
+        },
+        {
+            "id": 78,
+            "kind": 32,
+            "name": "emptyHeader",
+            "url": "modules/___tests___xutils_unpackmessage_.html#emptyheader",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/unpackMessage\""
+        },
+        {
+            "id": 79,
+            "kind": 32,
+            "name": "bytesEqual",
+            "url": "modules/___tests___xutils_unpackmessage_.html#bytesequal",
+            "classes": "tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported",
+            "parent": "\"__tests__/XUtils/unpackMessage\""
         }
     ],
     "index": {
         "version": "2.3.9",
         "fields": ["name", "parent"],
         "fieldVectors": [
-            ["name/0", [0, 11.412]],
+            ["name/0", [0, 19.521]],
             ["parent/0", []],
-            ["name/1", [1, 31.781]],
-            ["parent/1", [0, 1.128]],
-            ["name/2", [2, 31.781]],
-            ["parent/2", [3, 0.899]],
-            ["name/3", [4, 31.781]],
-            ["parent/3", [3, 0.899]],
-            ["name/4", [5, 31.781]],
-            ["parent/4", [3, 0.899]],
-            ["name/5", [6, 31.781]],
-            ["parent/5", [3, 0.899]],
-            ["name/6", [7, 31.781]],
-            ["parent/6", [3, 0.899]],
-            ["name/7", [8, 31.781]],
-            ["parent/7", [3, 0.899]],
-            ["name/8", [9, 31.781]],
-            ["parent/8", [3, 0.899]],
-            ["name/9", [10, 31.781]],
-            ["parent/9", [3, 0.899]],
-            ["name/10", [11, 31.781]],
-            ["parent/10", [3, 0.899]],
-            ["name/11", [12, 31.781]],
-            ["parent/11", [3, 0.899]],
-            ["name/12", [13, 31.781]],
-            ["parent/12", [3, 0.899]],
-            ["name/13", [14, 20.794]],
-            ["parent/13", [15, 3.14]],
-            ["name/14", [16, 31.781]],
-            ["parent/14", [3, 0.899]],
-            ["name/15", [14, 20.794]],
-            ["parent/15", [17, 3.14]],
-            ["name/16", [18, 31.781]],
-            ["parent/16", [3, 0.899]],
-            ["name/17", [14, 20.794]],
-            ["parent/17", [19, 3.14]],
-            ["name/18", [20, 31.781]],
-            ["parent/18", [3, 0.899]],
-            ["name/19", [14, 20.794]],
-            ["parent/19", [21, 3.14]],
-            ["name/20", [22, 31.781]],
-            ["parent/20", [0, 1.128]],
-            ["name/21", [23, 31.781]],
-            ["parent/21", [0, 1.128]],
-            ["name/22", [24, 31.781]],
-            ["parent/22", [0, 1.128]],
-            ["name/23", [25, 31.781]],
-            ["parent/23", [0, 1.128]],
-            ["name/24", [26, 31.781]],
-            ["parent/24", [27, 1.691]],
-            ["name/25", [28, 31.781]],
-            ["parent/25", [27, 1.691]],
-            ["name/26", [29, 31.781]],
-            ["parent/26", [27, 1.691]],
-            ["name/27", [30, 31.781]],
-            ["parent/27", [27, 1.691]],
-            ["name/28", [31, 31.781]],
-            ["parent/28", [27, 1.691]],
-            ["name/29", [32, 31.781]],
-            ["parent/29", [27, 1.691]],
-            ["name/30", [33, 31.781]],
-            ["parent/30", [0, 1.128]],
-            ["name/31", [34, 31.781]],
-            ["parent/31", [0, 1.128]],
-            ["name/32", [35, 31.781]],
-            ["parent/32", [0, 1.128]],
-            ["name/33", [36, 31.781]],
-            ["parent/33", [0, 1.128]],
-            ["name/34", [37, 31.781]],
-            ["parent/34", [0, 1.128]]
+            ["name/1", [1, 39.89]],
+            ["parent/1", [0, 1.784]],
+            ["name/2", [2, 26.897]],
+            ["parent/2", [3, 1.572]],
+            ["name/3", [4, 34.782]],
+            ["parent/3", [3, 1.572]],
+            ["name/4", [5, 34.782]],
+            ["parent/4", [3, 1.572]],
+            ["name/5", [6, 34.782]],
+            ["parent/5", [3, 1.572]],
+            ["name/6", [7, 34.782]],
+            ["parent/6", [3, 1.572]],
+            ["name/7", [8, 28.904]],
+            ["parent/7", [3, 1.572]],
+            ["name/8", [9, 34.782]],
+            ["parent/8", [3, 1.572]],
+            ["name/9", [10, 34.782]],
+            ["parent/9", [3, 1.572]],
+            ["name/10", [11, 34.782]],
+            ["parent/10", [3, 1.572]],
+            ["name/11", [12, 34.782]],
+            ["parent/11", [3, 1.572]],
+            ["name/12", [13, 34.782]],
+            ["parent/12", [3, 1.572]],
+            ["name/13", [14, 22.544]],
+            ["parent/13", [15, 3.645]],
+            ["name/14", [16, 34.782]],
+            ["parent/14", [3, 1.572]],
+            ["name/15", [14, 22.544]],
+            ["parent/15", [17, 3.645]],
+            ["name/16", [18, 34.782]],
+            ["parent/16", [3, 1.572]],
+            ["name/17", [14, 22.544]],
+            ["parent/17", [19, 3.645]],
+            ["name/18", [20, 34.782]],
+            ["parent/18", [3, 1.572]],
+            ["name/19", [14, 22.544]],
+            ["parent/19", [21, 3.645]],
+            ["name/20", [22, 39.89]],
+            ["parent/20", [0, 1.784]],
+            ["name/21", [23, 39.89]],
+            ["parent/21", [0, 1.784]],
+            ["name/22", [24, 39.89]],
+            ["parent/22", [0, 1.784]],
+            ["name/23", [25, 39.89]],
+            ["parent/23", [0, 1.784]],
+            ["name/24", [26, 39.89]],
+            ["parent/24", [27, 2.305]],
+            ["name/25", [28, 39.89]],
+            ["parent/25", [27, 2.305]],
+            ["name/26", [29, 39.89]],
+            ["parent/26", [27, 2.305]],
+            ["name/27", [30, 39.89]],
+            ["parent/27", [27, 2.305]],
+            ["name/28", [31, 39.89]],
+            ["parent/28", [27, 2.305]],
+            ["name/29", [32, 39.89]],
+            ["parent/29", [27, 2.305]],
+            ["name/30", [33, 39.89]],
+            ["parent/30", [0, 1.784]],
+            ["name/31", [34, 39.89]],
+            ["parent/31", [0, 1.784]],
+            ["name/32", [35, 39.89]],
+            ["parent/32", [0, 1.784]],
+            ["name/33", [36, 39.89]],
+            ["parent/33", [0, 1.784]],
+            ["name/34", [37, 39.89]],
+            ["parent/34", [0, 1.784]],
+            ["name/35", [38, 26.897]],
+            ["parent/35", []],
+            ["name/36", [39, 39.89]],
+            ["parent/36", [38, 2.458]],
+            ["name/37", [40, 34.782]],
+            ["parent/37", [41, 3.178]],
+            ["name/38", [42, 34.782]],
+            ["parent/38", [41, 3.178]],
+            ["name/39", [43, 39.89]],
+            ["parent/39", [38, 2.458]],
+            ["name/40", [40, 34.782]],
+            ["parent/40", [44, 3.178]],
+            ["name/41", [42, 34.782]],
+            ["parent/41", [44, 3.178]],
+            ["name/42", [45, 39.89]],
+            ["parent/42", [38, 2.458]],
+            ["name/43", [46, 39.89]],
+            ["parent/43", [38, 2.458]],
+            ["name/44", [47, 39.89]],
+            ["parent/44", []],
+            ["name/45", [48, 39.89]],
+            ["parent/45", []],
+            ["name/46", [49, 39.89]],
+            ["parent/46", []],
+            ["name/47", [50, 39.89]],
+            ["parent/47", []],
+            ["name/48", [51, 39.89]],
+            ["parent/48", []],
+            ["name/49", [52, 34.782]],
+            ["parent/49", []],
+            ["name/50", [2, 26.897]],
+            ["parent/50", [52, 3.178]],
+            ["name/51", [53, 34.782]],
+            ["parent/51", []],
+            ["name/52", [8, 28.904]],
+            ["parent/52", [53, 3.178]],
+            ["name/53", [54, 31.417]],
+            ["parent/53", []],
+            ["name/54", [9, 34.782]],
+            ["parent/54", [54, 2.871]],
+            ["name/55", [10, 34.782]],
+            ["parent/55", [54, 2.871]],
+            ["name/56", [55, 31.417]],
+            ["parent/56", []],
+            ["name/57", [4, 34.782]],
+            ["parent/57", [55, 2.871]],
+            ["name/58", [2, 26.897]],
+            ["parent/58", [55, 2.871]],
+            ["name/59", [56, 31.417]],
+            ["parent/59", []],
+            ["name/60", [7, 34.782]],
+            ["parent/60", [56, 2.871]],
+            ["name/61", [8, 28.904]],
+            ["parent/61", [56, 2.871]],
+            ["name/62", [57, 23.795]],
+            ["parent/62", []],
+            ["name/63", [12, 34.782]],
+            ["parent/63", [57, 2.174]],
+            ["name/64", [11, 34.782]],
+            ["parent/64", [57, 2.174]],
+            ["name/65", [13, 34.782]],
+            ["parent/65", [57, 2.174]],
+            ["name/66", [14, 22.544]],
+            ["parent/66", [58, 3.645]],
+            ["name/67", [16, 34.782]],
+            ["parent/67", [57, 2.174]],
+            ["name/68", [14, 22.544]],
+            ["parent/68", [59, 3.645]],
+            ["name/69", [18, 34.782]],
+            ["parent/69", [57, 2.174]],
+            ["name/70", [14, 22.544]],
+            ["parent/70", [60, 3.645]],
+            ["name/71", [20, 34.782]],
+            ["parent/71", [57, 2.174]],
+            ["name/72", [14, 22.544]],
+            ["parent/72", [61, 3.645]],
+            ["name/73", [62, 31.417]],
+            ["parent/73", []],
+            ["name/74", [5, 34.782]],
+            ["parent/74", [62, 2.871]],
+            ["name/75", [2, 26.897]],
+            ["parent/75", [62, 2.871]],
+            ["name/76", [63, 28.904]],
+            ["parent/76", []],
+            ["name/77", [6, 34.782]],
+            ["parent/77", [63, 2.641]],
+            ["name/78", [8, 28.904]],
+            ["parent/78", [63, 2.641]],
+            ["name/79", [2, 26.897]],
+            ["parent/79", [63, 2.641]]
         ],
         "invertedIndex": [
+            [
+                "__tests__/xconcat",
+                { "_index": 47, "name": { "44": {} }, "parent": {} }
+            ],
+            [
+                "__tests__/xdh",
+                { "_index": 48, "name": { "45": {} }, "parent": {} }
+            ],
+            [
+                "__tests__/xencode",
+                { "_index": 49, "name": { "46": {} }, "parent": {} }
+            ],
+            [
+                "__tests__/xhmac",
+                { "_index": 50, "name": { "47": {} }, "parent": {} }
+            ],
+            [
+                "__tests__/xkeyconvert",
+                {
+                    "_index": 38,
+                    "name": { "35": {} },
+                    "parent": { "36": {}, "39": {}, "42": {}, "43": {} }
+                }
+            ],
+            [
+                "__tests__/xkeyconvert\".convertedx25519keys",
+                { "_index": 44, "name": {}, "parent": { "40": {}, "41": {} } }
+            ],
+            [
+                "__tests__/xkeyconvert\".ed25519keys",
+                { "_index": 41, "name": {}, "parent": { "37": {}, "38": {} } }
+            ],
+            [
+                "__tests__/xmnemonic",
+                { "_index": 51, "name": { "48": {} }, "parent": {} }
+            ],
+            [
+                "__tests__/xutils/bytesequal",
+                { "_index": 52, "name": { "49": {} }, "parent": { "50": {} } }
+            ],
+            [
+                "__tests__/xutils/emptyheader",
+                { "_index": 53, "name": { "51": {} }, "parent": { "52": {} } }
+            ],
+            [
+                "__tests__/xutils/keyfilefunctions",
+                {
+                    "_index": 54,
+                    "name": { "53": {} },
+                    "parent": { "54": {}, "55": {} }
+                }
+            ],
+            [
+                "__tests__/xutils/numbertouint8arr",
+                {
+                    "_index": 55,
+                    "name": { "56": {} },
+                    "parent": { "57": {}, "58": {} }
+                }
+            ],
+            [
+                "__tests__/xutils/packmessage",
+                {
+                    "_index": 56,
+                    "name": { "59": {} },
+                    "parent": { "60": {}, "61": {} }
+                }
+            ],
+            [
+                "__tests__/xutils/stringencoding",
+                {
+                    "_index": 57,
+                    "name": { "62": {} },
+                    "parent": {
+                        "63": {},
+                        "64": {},
+                        "65": {},
+                        "67": {},
+                        "69": {},
+                        "71": {}
+                    }
+                }
+            ],
+            [
+                "__tests__/xutils/stringencoding\".decodebase64",
+                { "_index": 61, "name": {}, "parent": { "72": {} } }
+            ],
+            [
+                "__tests__/xutils/stringencoding\".decodeutf8",
+                { "_index": 59, "name": {}, "parent": { "68": {} } }
+            ],
+            [
+                "__tests__/xutils/stringencoding\".encodebase64",
+                { "_index": 60, "name": {}, "parent": { "70": {} } }
+            ],
+            [
+                "__tests__/xutils/stringencoding\".encodeutf8",
+                { "_index": 58, "name": {}, "parent": { "66": {} } }
+            ],
+            [
+                "__tests__/xutils/uint8arrtonumber",
+                {
+                    "_index": 62,
+                    "name": { "73": {} },
+                    "parent": { "74": {}, "75": {} }
+                }
+            ],
+            [
+                "__tests__/xutils/unpackmessage",
+                {
+                    "_index": 63,
+                    "name": { "76": {} },
+                    "parent": { "77": {}, "78": {}, "79": {} }
+                }
+            ],
             [
                 "__type",
                 {
                     "_index": 14,
-                    "name": { "13": {}, "15": {}, "17": {}, "19": {} },
+                    "name": {
+                        "13": {},
+                        "15": {},
+                        "17": {},
+                        "19": {},
+                        "66": {},
+                        "68": {},
+                        "70": {},
+                        "72": {}
+                    },
                     "parent": {}
                 }
             ],
-            ["bytesequal", { "_index": 2, "name": { "2": {} }, "parent": {} }],
+            [
+                "bytesequal",
+                {
+                    "_index": 2,
+                    "name": { "2": {}, "50": {}, "58": {}, "75": {}, "79": {} },
+                    "parent": {}
+                }
+            ],
+            [
+                "convertedx25519keys",
+                { "_index": 43, "name": { "39": {} }, "parent": {} }
+            ],
             ["curve", { "_index": 26, "name": { "24": {} }, "parent": {} }],
             [
                 "decodebase64",
-                { "_index": 20, "name": { "18": {} }, "parent": {} }
+                { "_index": 20, "name": { "18": {}, "71": {} }, "parent": {} }
             ],
-            ["decodehex", { "_index": 11, "name": { "10": {} }, "parent": {} }],
+            [
+                "decodehex",
+                { "_index": 11, "name": { "10": {}, "64": {} }, "parent": {} }
+            ],
             [
                 "decodeutf8",
-                { "_index": 16, "name": { "14": {} }, "parent": {} }
+                { "_index": 16, "name": { "14": {}, "67": {} }, "parent": {} }
             ],
-            ["emptyheader", { "_index": 8, "name": { "7": {} }, "parent": {} }],
+            [
+                "ed25519keys",
+                { "_index": 39, "name": { "36": {} }, "parent": {} }
+            ],
+            [
+                "emptyheader",
+                {
+                    "_index": 8,
+                    "name": { "7": {}, "52": {}, "61": {}, "78": {} },
+                    "parent": {}
+                }
+            ],
             [
                 "encodebase64",
-                { "_index": 18, "name": { "16": {} }, "parent": {} }
+                { "_index": 18, "name": { "16": {}, "69": {} }, "parent": {} }
             ],
-            ["encodehex", { "_index": 12, "name": { "11": {} }, "parent": {} }],
+            [
+                "encodehex",
+                { "_index": 12, "name": { "11": {}, "63": {} }, "parent": {} }
+            ],
             [
                 "encodeutf8",
-                { "_index": 13, "name": { "12": {} }, "parent": {} }
+                { "_index": 13, "name": { "12": {}, "65": {} }, "parent": {} }
             ],
             ["hash", { "_index": 28, "name": { "25": {} }, "parent": {} }],
             [
@@ -479,8 +1067,16 @@
                 { "_index": 29, "name": { "26": {} }, "parent": {} }
             ],
             [
+                "keypairfromstring",
+                { "_index": 46, "name": { "43": {} }, "parent": {} }
+            ],
+            [
+                "keypairtostring",
+                { "_index": 45, "name": { "42": {} }, "parent": {} }
+            ],
+            [
                 "loadkeyfile",
-                { "_index": 10, "name": { "9": {} }, "parent": {} }
+                { "_index": 10, "name": { "9": {}, "55": {} }, "parent": {} }
             ],
             [
                 "min_otk_supply",
@@ -488,17 +1084,31 @@
             ],
             [
                 "numbertouint8arr",
-                { "_index": 4, "name": { "3": {} }, "parent": {} }
+                { "_index": 4, "name": { "3": {}, "57": {} }, "parent": {} }
             ],
-            ["packmessage", { "_index": 7, "name": { "6": {} }, "parent": {} }],
-            ["savekeyfile", { "_index": 9, "name": { "8": {} }, "parent": {} }],
+            [
+                "packmessage",
+                { "_index": 7, "name": { "6": {}, "60": {} }, "parent": {} }
+            ],
+            [
+                "private",
+                { "_index": 42, "name": { "38": {}, "41": {} }, "parent": {} }
+            ],
+            [
+                "public",
+                { "_index": 40, "name": { "37": {}, "40": {} }, "parent": {} }
+            ],
+            [
+                "savekeyfile",
+                { "_index": 9, "name": { "8": {}, "54": {} }, "parent": {} }
+            ],
             [
                 "uint8arrtonumber",
-                { "_index": 5, "name": { "4": {} }, "parent": {} }
+                { "_index": 5, "name": { "4": {}, "74": {} }, "parent": {} }
             ],
             [
                 "unpackmessage",
-                { "_index": 6, "name": { "5": {} }, "parent": {} }
+                { "_index": 6, "name": { "5": {}, "77": {} }, "parent": {} }
             ],
             ["xconcat", { "_index": 36, "name": { "33": {} }, "parent": {} }],
             [
