@@ -9,9 +9,25 @@ import msgpack from "msgpack-lite";
 import { pbkdf2Sync } from "pbkdf2";
 import nacl from "tweetnacl";
 
+/**
+ * Provides an interface that can map an ed25519 keypair to its equivalent
+ * X25519 keypair.
+ */
 export const XKeyConvert = ed2curve;
 
+/**
+ * Provides several methods that are useful in working with bytes and
+ * vex messages.
+ */
 export class XUtils extends KeyRingUtils {
+    /**
+     * Checks if two buffer-like objects are equal.
+     *
+     * @param buf1
+     * @param buf2
+     *
+     * @returns True if equal, else false.
+     */
     public static bytesEqual(buf1: ArrayBufferLike, buf2: ArrayBufferLike) {
         if (buf1.byteLength !== buf2.byteLength) {
             return false;
@@ -26,6 +42,14 @@ export class XUtils extends KeyRingUtils {
         return true;
     }
 
+    /**
+     * Returns a six bit Uint8Array representation of an integer.
+     * The integer must be positive, and it must be able to be stored
+     * in six bytes.
+     *
+     * @param n The number to convert.
+     * @returns The Uint8Array representation of n.
+     */
     public static numberToUint8Arr(n: number): Uint8Array {
         let str = n.toString(16);
         while (str.length < 12) {
@@ -34,10 +58,23 @@ export class XUtils extends KeyRingUtils {
         return XUtils.decodeHex(str);
     }
 
+    /**
+     * Converts a Uint8Array representation of an integer back into a number.
+     *
+     * @param arr The array to convert.
+     * @returns the number representation of arr.
+     */
     public static uint8ArrToNumber(arr: Uint8Array) {
         return Buffer.from(arr).readUIntBE(0, arr.length);
     }
 
+    /**
+     * Takes a vex message and unpacks it into its header and a javascript object
+     * respresentation of its body.
+     *
+     * @param arr The array to convert.
+     * @returns [32 byte header, message body]
+     */
     public static unpackMessage(msg: Buffer): [Uint8Array, XTypes.WS.IBaseMsg] {
         const msgp = Uint8Array.from(msg);
         const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
@@ -46,12 +83,23 @@ export class XUtils extends KeyRingUtils {
         return [msgh, msgb];
     }
 
+    /**
+     * Packs a javascript object and a 32 byte header into a vex message.
+     *
+     * @param arr The array to convert.
+     * @returns the packed message.
+     */
     public static packMessage(msg: any, header?: Uint8Array) {
         const msgb = Uint8Array.from(msgpack.encode(msg));
         const msgh = header || XUtils.emptyHeader();
         return xConcat(msgh, msgb);
     }
 
+    /**
+     * Returns the empty header (32 0's)
+     *
+     * @returns The empty header.
+     */
     public static emptyHeader() {
         return new Uint8Array(xConstants.HEADER_SIZE);
     }
@@ -146,6 +194,12 @@ export class XUtils extends KeyRingUtils {
     }
 }
 
+/**
+ * Gets a word list representation of a byte sequence.
+ *
+ * @param entropy The bytes to derive the wordlist from.
+ * @param wordList Optional, override the wordlist. See bip39 docs for details.
+ */
 export function xMnemonic(
     entropy: Uint8Array,
     wordList?: string[] | undefined
@@ -153,6 +207,12 @@ export function xMnemonic(
     return bip39.entropyToMnemonic(Buffer.from(entropy), wordList);
 }
 
+/**
+ * Returns a 32 byte HMAC of a javscript object.
+ *
+ * @param msg the message to create the HMAC of
+ * @param SK the secret key to create the HMAC with
+ */
 export function xHMAC(msg: any, SK: Uint8Array) {
     const packedMsg = Uint8Array.from(msgpack.encode(msg));
     const hmacGen = createHmac("sha256", Buffer.from(SK));
@@ -161,6 +221,9 @@ export function xHMAC(msg: any, SK: Uint8Array) {
     return hmac;
 }
 
+/**
+ * Constants for vex.
+ */
 export const xConstants: XConstants = {
     CURVE: "X25519",
     HASH: "SHA-512",
@@ -170,10 +233,19 @@ export const xConstants: XConstants = {
     HEADER_SIZE: 32,
 };
 
+/**
+ * Returns a 24 byte random nonce of cryptographic quality.
+ */
 export function xMakeNonce(): Uint8Array {
     return nacl.randomBytes(24);
 }
 
+/**
+ * Derives a 32 byte secret key from some initial key material.
+ *
+ * @param IKM the initial key material.
+ * @returns The generated key.
+ */
 export function xKDF(IKM: Uint8Array): Uint8Array {
     return Uint8Array.from(
         hkdf(Buffer.from(IKM), xConstants.KEY_LENGTH, {
@@ -184,6 +256,14 @@ export function xKDF(IKM: Uint8Array): Uint8Array {
     );
 }
 
+/**
+ * Derives a shared Secret Key from a known private key and
+ * a peer's known public key.
+ *
+ * @param myPrivateKey Your own private key
+ * @param theirPublicKey Their public key
+ * @returns The derived shared secret, SK.
+ */
 export function xDH(
     myPrivateKey: Uint8Array,
     theirPublicKey: Uint8Array
@@ -191,6 +271,11 @@ export function xDH(
     return nacl.box.before(theirPublicKey, myPrivateKey);
 }
 
+/**
+ * Concatanates multiple Uint8Arrays.
+ *
+ * @param arrays As many Uint8Arrays as you would like to concatanate.
+ */
 export function xConcat(...arrays: Uint8Array[]): Uint8Array {
     // sum of individual array lengths
     const totalLength = arrays.reduce((acc, value) => acc + value.length, 0);
@@ -212,6 +297,12 @@ export function xConcat(...arrays: Uint8Array[]): Uint8Array {
     return result;
 }
 
+/**
+ * Encode an X25519 or X448 public key PK into a byte sequence.
+ * The encoding consists of 0 or 1 to represent the type of curve, followed by l
+ * ittle-endian encoding of the u-coordinate. See [rfc 7748](https://www.ietf.org/rfc/rfc7748.txt) for more
+ * details.
+ */
 export function xEncode(
     curveType: "X25519" | "X448",
     publicKey: Uint8Array
@@ -250,10 +341,16 @@ export function xEncode(
     return Uint8Array.from(bytes);
 }
 
+/**
+ * @ignore
+ */
 function keyLength(curve: "X25519" | "X448"): number {
     return curve === "X25519" ? 32 : 57;
 }
 
+/**
+ * @ignore
+ */
 function xMakeSalt(curve: "X25519" | "X448"): Uint8Array {
     const saltLength = keyLength(curve);
 
@@ -265,6 +362,9 @@ function xMakeSalt(curve: "X25519" | "X448"): Uint8Array {
     return salt;
 }
 
+/**
+ * @ignore
+ */
 function isEven(value: bigint) {
     if (value % BigInt(2) === BigInt(0)) {
         return true;
@@ -273,6 +373,9 @@ function isEven(value: bigint) {
     }
 }
 
+/**
+ * @ignore
+ */
 // tslint:disable-next-line: interface-name
 interface XConstants {
     CURVE: "X25519";

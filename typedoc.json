@@ -1,0 +1,5 @@
+{
+    "out": "docs",
+    "excludeExternals": true,
+    "excludePrivate": true
+}
