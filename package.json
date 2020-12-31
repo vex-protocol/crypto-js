@@ -12,7 +12,8 @@
         "prettier": "node ./node_modules/prettier/bin-prettier.js '**/*.{ts,tsx,json,md}' --tab-width 4 --trailing-comma es5 --ignore-path .gitignore  --arrow-parens always --write",
         "lint": "./node_modules/tslint/bin/tslint src/**/*.ts{,x}",
         "lint-fix": "./node_modules/tslint/bin/tslint src/**/*.ts{,x} --fix",
-        "test": "npx jest"
+        "test": "npx jest",
+        "docs": "npx tsdoc --out docs ./src/index.ts"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.166",
