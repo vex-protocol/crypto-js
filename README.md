@@ -2,6 +2,8 @@
 
 All of the crypto functions for the key exchange are contained in here.
 
+[Documentation](https://vex-chat.github.io/crypto-js/)
+
 ## external crypto dependencies
 
 -   tweetnacl-js: sign / encrypt / decrypt / hash
