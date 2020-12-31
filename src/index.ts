@@ -51,6 +51,12 @@ export class XUtils extends KeyRingUtils {
      * @returns The Uint8Array representation of n.
      */
     public static numberToUint8Arr(n: number): Uint8Array {
+        if (n < 0 || n > 281474976710655) {
+            throw new Error(
+                "Expected integer 0 < n < 281474976710655, received " + n
+            );
+        }
+
         let str = n.toString(16);
         while (str.length < 12) {
             str = "0" + str;
@@ -75,7 +81,9 @@ export class XUtils extends KeyRingUtils {
      * @param arr The array to convert.
      * @returns [32 byte header, message body]
      */
-    public static unpackMessage(msg: Buffer): [Uint8Array, XTypes.WS.IBaseMsg] {
+    public static unpackMessage(
+        msg: Uint8Array | Buffer
+    ): [Uint8Array, XTypes.WS.IBaseMsg] {
         const msgp = Uint8Array.from(msg);
         const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
         const msgb = msgpack.decode(msgp.slice(xConstants.HEADER_SIZE));
@@ -104,19 +112,33 @@ export class XUtils extends KeyRingUtils {
         return new Uint8Array(xConstants.HEADER_SIZE);
     }
 
+    /**
+     * Encrypts a secret key with a password and saves it as a file.
+     *
+     * @param path The path to save the keyfile.
+     * @param password The password to encrypt the keyfile with.
+     * @param keyToSave The key to encrypt.
+     * @param iterationOverride An optional override if you'd prefer to manually
+     * select your iterations rather than having a random amount selected.
+     */
     public static saveKeyFile = (
         path: string,
         password: string,
-        keyToSave: string
+        keyToSave: string,
+        iterationOverride?: number
     ): void => {
         const UNENCRYPTED_SIGNKEY = XUtils.decodeHex(keyToSave);
+
+        const OFFSET = 1000;
 
         // generate random amount of iterations
         const R1 = nacl.randomBytes(1);
         const R2 = nacl.randomBytes(1);
         const N1 = XUtils.uint8ArrToNumber(R1);
         const N2 = XUtils.uint8ArrToNumber(R2);
-        const iterations = N1 * N2;
+        const iterations = iterationOverride
+            ? iterationOverride
+            : N1 * N2 + OFFSET;
 
         // length 6
         const ITERATIONS = XUtils.numberToUint8Arr(iterations);
@@ -141,6 +163,12 @@ export class XUtils extends KeyRingUtils {
         );
     };
 
+    /**
+     * Decrypts and returns a secret key stored in a file with saveKeyFile().
+     *
+     * @param path The path of the file.
+     * @param password The password the file was encrypted with.
+     */
     public static loadKeyFile = (path: string, password: string): string => {
         const keyFile = Uint8Array.from(fs.readFileSync(path));
         const ITERATIONS = XUtils.uint8ArrToNumber(keyFile.slice(0, 6));
@@ -171,7 +199,7 @@ export class XUtils extends KeyRingUtils {
      *
      * @returns The Uint8Array.
      */
-    public static decodeHex(hexString: string, length?: number): Uint8Array {
+    public static decodeHex(hexString: string): Uint8Array {
         if (hexString.length === 0) {
             return new Uint8Array();
         }
