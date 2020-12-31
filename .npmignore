@@ -14,3 +14,4 @@ scripts
 docs
 typedoc.json
 *.log
+./dist/__tests__
