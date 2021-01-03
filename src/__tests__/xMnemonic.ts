@@ -9,6 +9,4 @@ test("xMnemonic", () => {
     const mnemonic = xMnemonic(XUtils.decodeHex(IKM));
 
     expect(mnemonic === correctMnemonic).toBe(true);
-
-    throw new Error("Test failure.");
 });
