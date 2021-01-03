@@ -26,6 +26,7 @@
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
         "typedoc": "^0.19.2",
+        "typedoc-plugin-no-inherit": "^1.2.0",
         "typescript": "^3.7.2"
     },
     "lint-staged": {
