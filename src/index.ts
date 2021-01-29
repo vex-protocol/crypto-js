@@ -1,4 +1,3 @@
-import { KeyRingUtils } from "@extrahash/keyring";
 import {
     decode as decodeBase64,
     encode as encodeBase64,
