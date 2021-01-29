@@ -1,4 +1,10 @@
 import { KeyRingUtils } from "@extrahash/keyring";
+import {
+    decode as decodeBase64,
+    encode as encodeBase64,
+} from "@stablelib/base64";
+import { decode as encodeUTF8, encode as decodeUTF8 } from "@stablelib/utf8";
+
 import { XTypes } from "@vex-chat/types";
 import * as bip39 from "bip39";
 import createHmac from "create-hmac";
@@ -19,7 +25,15 @@ export const XKeyConvert = ed2curve;
  * Provides several methods that are useful in working with bytes and
  * vex messages.
  */
-export class XUtils extends KeyRingUtils {
+export class XUtils {
+    public static encodeUTF8 = encodeUTF8;
+
+    public static decodeUTF8 = decodeUTF8;
+
+    public static encodeBase64 = encodeBase64;
+
+    public static decodeBase64 = decodeBase64;
+
     /**
      * Checks if two buffer-like objects are equal.
      *

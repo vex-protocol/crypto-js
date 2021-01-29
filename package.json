@@ -42,6 +42,8 @@
     },
     "dependencies": {
         "@extrahash/keyring": "^1.0.1",
+        "@stablelib/base64": "^1.0.0",
+        "@stablelib/utf8": "^1.0.0",
         "@types/create-hmac": "^1.1.0",
         "@types/ed2curve": "^0.2.2",
         "@types/msgpack-lite": "^0.1.7",

@@ -29,22 +29,22 @@ test("Encodes and decodes hex", () => {
 
 test("Encodes and decodes utf8", () => {
     const data = [
-        "�>M�)Ik7:�L?\x1C=�\x00��#�\x19H�ַ KL9/\x1D",
-        "��\x0E\x0F�e\x17aj*ڷ���S4��i�BsOI�`����U",
-        "���d8\x7F���.��,9ZmIu\x02�Jt��Uz̀��\x14",
-        // tslint:disable-next-line: quotemark
-        '��L��:�\x02��\x1E\\\x04�_jw��v�������\x01�"\x1C�',
-        "\x05;�\x01!�\x0F�-�֛��ʨ�`��\x14�\x03����d�~�o",
-        // tslint:disable-next-line: quotemark
-        '\x02\x13\x12l��"`ϼ�"\x17�D��r��0\x00!�4V�Wi\x1B\x17',
-        "��y\x1FS�\\�p�4���%Vt��\n�?vHGg,`b%(\f",
-        "<b�N�N!FG�-�*�I�Z����\x0F\x0B�{ʌ��(.",
-        "�z�&�0���miouj�P�\x7F�_3\x1D���\x00���i��",
-        "3\x01cgT\x13�U�\x05,�;���|�P��X�q�/{\x19\x1E��8",
+        "L-dr`?%z5%?R8rT:Lwvk",
+        "H]gy!'X\")(:V/3.'LpE/",
+        "5G%h:@%PvCOk R,[]=z>",
+        '#d868evg)LM"{04$gFt',
+        '?\\/sz?&mh"$!K1_`qc15',
+        "V{Yw[ R{5L}1T3OHSj.",
+        "%-Kek[HIfW=_z`r'R|Av",
+        "E.E'\"\\ jzyxpfc'.N*z`",
+        "p:&^?<[n<ScUXB#O=|z",
+        'D;`5`"@H7X8Iw0%KbJr8',
+        '#,y][nQ9]",.62Bwxj#d',
+        '[eN"USyz$Dg@%a=a)r2h',
     ];
 
     for (const value of data) {
-        expect(encodeUTF8(decodeUTF8(value)) === value).toBe(true);
+        expect(encodeUTF8(decodeUTF8(value))).toBe(value);
     }
 });
 
