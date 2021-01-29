@@ -25,6 +25,7 @@
         "prettier": "^1.19.1",
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
+        "ts-jest": "^26.4.4",
         "typedoc": "^0.19.2",
         "typedoc-plugin-no-inherit": "^1.2.0",
         "typescript": "^3.7.2"
@@ -41,7 +42,6 @@
         }
     },
     "dependencies": {
-        "@extrahash/keyring": "^1.0.1",
         "@stablelib/base64": "^1.0.0",
         "@stablelib/utf8": "^1.0.0",
         "@types/create-hmac": "^1.1.0",
@@ -55,7 +55,6 @@
         "futoin-hkdf": "^1.3.2",
         "msgpack-lite": "^0.1.26",
         "pbkdf2": "^3.1.1",
-        "ts-jest": "^26.4.4",
         "tweetnacl": "^1.0.3"
     }
 }
