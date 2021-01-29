@@ -13,6 +13,7 @@ import hkdf from "futoin-hkdf";
 import msgpack from "msgpack-lite";
 import { pbkdf2Sync } from "pbkdf2";
 import nacl from "tweetnacl";
+import sha from "sha.js";
 
 /**
  * Provides an interface that can map an ed25519 keypair to its equivalent
@@ -295,6 +296,17 @@ export function xKDF(IKM: Uint8Array): Uint8Array {
             hash: xConstants.HASH,
         })
     );
+}
+
+/**
+ * Hashes some data.
+ *
+ * @param data the data to hash.
+ * @returns The hash of the data.
+ */
+export function xHash(data: Uint8Array) {
+    const hash = sha("sha512");
+    return hash.update(data).digest("hex");
 }
 
 /**
