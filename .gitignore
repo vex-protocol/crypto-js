@@ -4,3 +4,5 @@ dist
 **/*.log
 .env
 *.tgz
+yalc.lock
+.yalc
