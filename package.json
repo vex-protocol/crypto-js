@@ -19,7 +19,7 @@
   "dependencies": {
     "@stablelib/base64": "^1.0.1",
     "@stablelib/utf8": "^1.0.1",
-    "@vex-chat/types": "file:.yalc/@vex-chat/types",
+    "@vex-chat/types": "^0.11.0",
     "bip39": "^3.1.0",
     "ed2curve": "^0.3.0",
     "msgpackr": "^1.10.1",
@@ -43,7 +43,8 @@
     "prettier": "^3.2.0",
     "rimraf": "^5.0.0",
     "ts-jest": "^29.4.6",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "@changesets/cli": "^2.29.8"
   },
   "lint-staged": {
     "src/**/*.{ts}": [
