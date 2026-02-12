@@ -1,0 +1,8 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "@vex-chat/crypto": "0.8.0"
+  },
+  "changesets": []
+}
