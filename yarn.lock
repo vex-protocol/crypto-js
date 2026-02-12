@@ -1323,10 +1323,10 @@
   resolved "https://registry.yarnpkg.com/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.11.1.tgz#538b1e103bf8d9864e7b85cc96fa8d6fb6c40777"
   integrity sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==
 
-"@vex-chat/types@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@vex-chat/types/-/types-0.11.0.tgz#7f9818337b409e503cbb0ff16ee1e3297f2df834"
-  integrity sha512-jTpXRYLl0yndUX28bUOEH1iKJqKyOMYggLwtMdN1sxvI+7DteFEg0S3vfKuvlSiLGouZ/H+az4RyNOknmqxlOw==
+"@vex-chat/types@1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@vex-chat/types/-/types-1.0.0-rc.0.tgz#e837dc28fea5cddfa4407232d30100897ed6b7af"
+  integrity sha512-RVr6x5NPd8fKmiv9TbBpvOdEXU9vweaKYUmv5c0k0wFQSkAA6OaCaKxcCwkp5wTqLEOFVGS9KS/Ls3ZKZPbNAg==
   dependencies:
     tweetnacl "^1.0.3"
 
