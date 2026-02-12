@@ -4,5 +4,7 @@
   "initialVersions": {
     "@vex-chat/crypto": "0.8.0"
   },
-  "changesets": []
+  "changesets": [
+    "migrate-to-native-crypto"
+  ]
 }
