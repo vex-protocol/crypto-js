@@ -1,5 +1,7 @@
 # @vex-chat/crypto-js
 
+currently requires node v20
+
 ![typescript_ci](https://github.com/vex-chat/crypto-js/workflows/typescript_ci/badge.svg)
 
 All of the crypto functions for the key exchange are contained in here.
