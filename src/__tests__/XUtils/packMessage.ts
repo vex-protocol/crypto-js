@@ -1,6 +1,5 @@
 import { IResourceMsg } from "@vex-chat/types";
-import _ from "lodash";
-import { XUtils } from "../../index";
+import { XUtils } from "../../index.js";
 const { packMessage, unpackMessage, emptyHeader } = XUtils;
 
 test("packMessage Round Trip", () => {
@@ -19,5 +18,5 @@ test("packMessage Round Trip", () => {
   const [header, body] = unpackMessage(packedBytes);
 
   expect(XUtils.bytesEqual(header, emptyHeader())).toBe(true);
-  expect(_.isEqual(body, testMessage)).toBe(true);
+  expect(body).toEqual(testMessage);
 });

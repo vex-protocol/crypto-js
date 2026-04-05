@@ -1,7 +1,5 @@
 import { IResourceMsg } from "@vex-chat/types";
-// tslint:disable-next-line: no-implicit-dependencies
-import _ from "lodash";
-import { XUtils } from "../../index";
+import { XUtils } from "../../index.js";
 const { unpackMessage, emptyHeader, bytesEqual } = XUtils;
 
 test("unpackMessage (Legacy Compatibility)", () => {
@@ -22,5 +20,5 @@ test("unpackMessage (Legacy Compatibility)", () => {
 
   const [unpackedHeader, unpackedMessage] = unpackMessage(messageData);
   expect(bytesEqual(unpackedHeader, testHeader)).toBe(true);
-  expect(_.isEqual(testMessage, unpackedMessage)).toBe(true);
+  expect(unpackedMessage).toEqual(testMessage);
 });

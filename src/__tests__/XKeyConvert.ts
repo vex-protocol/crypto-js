@@ -1,7 +1,5 @@
-// tslint:disable-next-line: no-implicit-dependencies
-import _ from "lodash";
 import nacl from "tweetnacl";
-import { XKeyConvert, XUtils } from "..";
+import { XKeyConvert, XUtils } from "../index.js";
 
 const ed25519Keys = {
   public: "8d0538a45bce3d6fd43cd80a247da063c67cd01da2e263758567a51db5b1f7c6",
@@ -21,9 +19,7 @@ test("convertKeyPair", () => {
   // We cast to any to allow lodash comparison or check for existence
   expect(converted).toBeDefined();
   if (converted) {
-    expect(_.isEqual(keyPairToString(converted), convertedX25519Keys)).toBe(
-      true,
-    );
+    expect(keyPairToString(converted)).toEqual(convertedX25519Keys);
   }
 });
 
