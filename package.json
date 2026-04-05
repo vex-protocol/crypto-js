@@ -1,6 +1,6 @@
 {
   "name": "@vex-chat/crypto",
-  "version": "1.0.6-rc.4",
+  "version": "1.0.9-rc.7",
   "description": "Crypto primitives for Vex",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
