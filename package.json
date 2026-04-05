@@ -50,7 +50,7 @@
     "@types/node": "^24.12.2",
     "@typescript-eslint/eslint-plugin": "^8.57.1",
     "@typescript-eslint/parser": "^8.57.1",
-    "@vex-chat/types": "file:.yalc/@vex-chat/types",
+    "@vex-chat/types": "^1.0.0-rc.0",
     "eslint": "^10.1.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.0.0",
