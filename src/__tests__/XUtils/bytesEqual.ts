@@ -1,4 +1,4 @@
-import { XUtils } from "../../index";
+import { XUtils } from "../../index.js";
 const { bytesEqual } = XUtils;
 
 test("bytesEqual", () => {

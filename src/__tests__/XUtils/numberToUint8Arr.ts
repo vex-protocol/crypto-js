@@ -1,4 +1,4 @@
-import { XUtils } from "../../index";
+import { XUtils } from "../../index.js";
 const { numberToUint8Arr, bytesEqual } = XUtils;
 
 test("numberToUint8Arr", () => {
