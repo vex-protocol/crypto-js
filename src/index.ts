@@ -4,19 +4,21 @@ import {
 } from "@stablelib/base64";
 import { decode as encodeUTF8, encode as decodeUTF8 } from "@stablelib/utf8";
 
-import { IBaseMsg } from "@vex-chat/types";
+import type { IBaseMsg } from "@vex-chat/types";
 import * as bip39 from "bip39";
 import { createHash, createHmac, pbkdf2Sync, randomBytes } from "node:crypto";
 import ed2curve from "ed2curve";
-import fs from "fs";
+import { writeFileSync, readFileSync } from "node:fs";
 import { hkdfSync } from "node:crypto";
 import { Packr } from "msgpackr";
 import nacl from "tweetnacl";
 
-const packer = new Packr({
-  useRecords: false,
-  moreTypes: true,
-});
+// msgpackr with useRecords:false emits standard msgpack (no nonstandard record extension).
+// moreTypes:false keeps the extension set to only what other decoders understand.
+// pack() returns Node Buffer (tight view) so consumers like axios send the correct bytes.
+const packer = new Packr({ useRecords: false, moreTypes: false });
+const msgpackEncode = packer.pack.bind(packer);
+const msgpackDecode = packer.unpack.bind(packer);
 
 /**
  * Provides an interface that can map an ed25519 keypair to its equivalent
@@ -45,14 +47,17 @@ export class XUtils {
    *
    * @returns True if equal, else false.
    */
-  public static bytesEqual(buf1: ArrayBufferLike, buf2: ArrayBufferLike) {
-    if (buf1.byteLength !== buf2.byteLength) {
+  public static bytesEqual(
+    buf1: Uint8Array | ArrayBuffer,
+    buf2: Uint8Array | ArrayBuffer
+  ) {
+    const a = buf1 instanceof Uint8Array ? buf1 : new Uint8Array(buf1);
+    const b = buf2 instanceof Uint8Array ? buf2 : new Uint8Array(buf2);
+    if (a.byteLength !== b.byteLength) {
       return false;
     }
-    const dv1 = new Int8Array(buf1);
-    const dv2 = new Int8Array(buf2);
-    for (let i = 0; i !== buf1.byteLength; i++) {
-      if (dv1[i] !== dv2[i]) {
+    for (let i = 0; i !== a.byteLength; i++) {
+      if (a[i] !== b[i]) {
         return false;
       }
     }
@@ -103,8 +108,7 @@ export class XUtils {
   ): [Uint8Array, IBaseMsg] {
     const msgp = Uint8Array.from(msg);
     const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
-    // UPDATED: Use msgpackr
-    const msgb = packer.unpack(msgp.slice(xConstants.HEADER_SIZE)) as IBaseMsg;
+    const msgb = msgpackDecode(msgp.slice(xConstants.HEADER_SIZE)) as IBaseMsg;
 
     return [msgh, msgb];
   }
@@ -116,8 +120,7 @@ export class XUtils {
    * @returns the packed message.
    */
   public static packMessage(msg: any, header?: Uint8Array) {
-    // UPDATED: Use msgpackr
-    const msgb = packer.pack(msg);
+    const msgb = msgpackEncode(msg);
     const msgh = header || XUtils.emptyHeader();
     return xConcat(msgh, msgb);
   }
@@ -191,7 +194,7 @@ export class XUtils {
     offset += NONCE.length;
     result.set(ENCRYPTED_SIGNKEY, offset);
 
-    fs.writeFileSync(path, result);
+    writeFileSync(path, result);
   };
 
   /**
@@ -201,7 +204,7 @@ export class XUtils {
    * @param password The password the file was encrypted with.
    */
   public static loadKeyFile = (path: string, password: string): string => {
-    const keyFile = Uint8Array.from(fs.readFileSync(path));
+    const keyFile = Uint8Array.from(readFileSync(path));
     const ITERATIONS = XUtils.uint8ArrToNumber(keyFile.slice(0, 6));
     const PKBDF_SALT = keyFile.slice(6, 30);
     const ENCRYPTION_NONCE = keyFile.slice(30, 54);
@@ -275,7 +278,7 @@ export function xMnemonic(
  * @param SK the secret key to create the HMAC with
  */
 export function xHMAC(msg: any, SK: Uint8Array) {
-  const packedMsg = packer.pack(msg);
+  const packedMsg = msgpackEncode(msg);
   const hmacGen = createHmac("sha256", Buffer.from(SK));
   hmacGen.update(packedMsg);
   const hmac = Uint8Array.from(hmacGen.digest());
