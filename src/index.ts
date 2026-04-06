@@ -6,12 +6,23 @@ import { decode as encodeUTF8, encode as decodeUTF8 } from "@stablelib/utf8";
 
 import type { IBaseMsg } from "@vex-chat/types";
 import * as bip39 from "bip39";
-import { createHash, createHmac, pbkdf2Sync, randomBytes } from "node:crypto";
+import { hmac } from "@noble/hashes/hmac.js";
+import { sha256, sha512 } from "@noble/hashes/sha2.js";
+import { hkdf } from "@noble/hashes/hkdf.js";
+import { pbkdf2 as noblePbkdf2 } from "@noble/hashes/pbkdf2.js";
 import ed2curve from "ed2curve";
-import { writeFileSync, readFileSync } from "node:fs";
-import { hkdfSync } from "node:crypto";
 import { Packr } from "msgpackr";
 import nacl from "tweetnacl";
+
+// node:fs is loaded dynamically so the module can be imported in browser/RN
+// environments without failing at parse time. On Node the top-level await
+// resolves synchronously; on other runtimes _fs stays undefined.
+let _fs: { writeFileSync: typeof import("node:fs").writeFileSync; readFileSync: typeof import("node:fs").readFileSync } | undefined;
+try {
+  _fs = await import("node:fs");
+} catch {
+  // Not in a Node environment — saveKeyFile/loadKeyFile will throw at call time
+}
 
 // msgpackr with useRecords:false emits standard msgpack (no nonstandard record extension).
 // moreTypes:false keeps the extension set to only what other decoders understand.
@@ -93,7 +104,11 @@ export class XUtils {
    * @returns the number representation of arr.
    */
   public static uint8ArrToNumber(arr: Uint8Array) {
-    return Buffer.from(arr).readUIntBE(0, arr.length);
+    let n = 0;
+    for (let i = 0; i < arr.length; i++) {
+      n = n * 256 + arr[i];
+    }
+    return n;
   }
 
   /**
@@ -149,12 +164,14 @@ export class XUtils {
     keyToSave: string,
     iterationOverride?: number,
   ): void => {
+    if (!_fs) throw new Error("saveKeyFile requires Node.js (node:fs)");
+
     const UNENCRYPTED_SIGNKEY = XUtils.decodeHex(keyToSave);
 
     const OFFSET = 1000;
 
-    // generate random amount of iterations using Native Crypto
-    const rand = randomBytes(2);
+    // generate random amount of iterations
+    const rand = nacl.randomBytes(2);
     const N1 = rand[0];
     const N2 = rand[1];
 
@@ -164,19 +181,16 @@ export class XUtils {
 
     const PKBDF_SALT = xMakeNonce();
 
-    const ENCRYPTION_KEY = pbkdf2Sync(
-      password,
-      PKBDF_SALT,
-      iterations,
-      32,
-      "sha512",
-    );
+    const ENCRYPTION_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, {
+      c: iterations,
+      dkLen: 32,
+    });
     const NONCE = xMakeNonce();
 
     const ENCRYPTED_SIGNKEY = nacl.secretbox(
       UNENCRYPTED_SIGNKEY,
       NONCE,
-      new Uint8Array(ENCRYPTION_KEY),
+      ENCRYPTION_KEY,
     );
 
     const result = new Uint8Array(
@@ -194,7 +208,7 @@ export class XUtils {
     offset += NONCE.length;
     result.set(ENCRYPTED_SIGNKEY, offset);
 
-    writeFileSync(path, result);
+    _fs.writeFileSync(path, result);
   };
 
   /**
@@ -204,23 +218,22 @@ export class XUtils {
    * @param password The password the file was encrypted with.
    */
   public static loadKeyFile = (path: string, password: string): string => {
-    const keyFile = Uint8Array.from(readFileSync(path));
+    if (!_fs) throw new Error("loadKeyFile requires Node.js (node:fs)");
+
+    const keyFile = Uint8Array.from(_fs.readFileSync(path));
     const ITERATIONS = XUtils.uint8ArrToNumber(keyFile.slice(0, 6));
     const PKBDF_SALT = keyFile.slice(6, 30);
     const ENCRYPTION_NONCE = keyFile.slice(30, 54);
     const ENCRYPTED_KEY = keyFile.slice(54);
-    const DERIVED_KEY = pbkdf2Sync(
-      password,
-      PKBDF_SALT,
-      ITERATIONS,
-      32,
-      "sha512",
-    );
+    const DERIVED_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, {
+      c: ITERATIONS,
+      dkLen: 32,
+    });
 
     const DECRYPTED_SIGNKEY = nacl.secretbox.open(
       ENCRYPTED_KEY,
       ENCRYPTION_NONCE,
-      new Uint8Array(DERIVED_KEY),
+      DERIVED_KEY,
     );
 
     if (!DECRYPTED_SIGNKEY) {
@@ -268,7 +281,7 @@ export function xMnemonic(
   entropy: Uint8Array,
   wordList?: string[] | undefined,
 ) {
-  return bip39.entropyToMnemonic(Buffer.from(entropy), wordList);
+  return bip39.entropyToMnemonic(XUtils.encodeHex(entropy), wordList);
 }
 
 /**
@@ -279,10 +292,7 @@ export function xMnemonic(
  */
 export function xHMAC(msg: any, SK: Uint8Array) {
   const packedMsg = msgpackEncode(msg);
-  const hmacGen = createHmac("sha256", Buffer.from(SK));
-  hmacGen.update(packedMsg);
-  const hmac = Uint8Array.from(hmacGen.digest());
-  return hmac;
+  return hmac(sha256, SK, packedMsg);
 }
 
 /**
@@ -321,15 +331,7 @@ export function xMakeNonce(): Uint8Array {
 // }
 
 export function xKDF(IKM: Uint8Array): Uint8Array {
-  return new Uint8Array(
-    hkdfSync(
-      "sha512",
-      IKM,
-      xMakeSalt(xConstants.CURVE),
-      xConstants.INFO,
-      xConstants.KEY_LENGTH,
-    ),
-  );
+  return hkdf(sha512, IKM, xMakeSalt(xConstants.CURVE), new TextEncoder().encode(xConstants.INFO), xConstants.KEY_LENGTH);
 }
 
 /**
@@ -339,8 +341,7 @@ export function xKDF(IKM: Uint8Array): Uint8Array {
  * @returns The hash of the data.
  */
 export function xHash(data: Uint8Array) {
-  const hash = createHash("sha512");
-  return hash.update(data).digest("hex");
+  return XUtils.encodeHex(sha512(data));
 }
 
 /**
