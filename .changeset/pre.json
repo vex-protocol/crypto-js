@@ -5,6 +5,7 @@
     "@vex-chat/crypto": "0.8.0"
   },
   "changesets": [
-    "migrate-to-native-crypto"
+    "migrate-to-native-crypto",
+    "modernize-toolchain"
   ]
 }
