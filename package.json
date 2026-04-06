@@ -1,6 +1,6 @@
 {
   "name": "@vex-chat/crypto",
-  "version": "1.1.0-rc.0",
+  "version": "1.1.0-rc.1",
   "description": "Crypto primitives for Vex",
   "type": "module",
   "sideEffects": false,
@@ -72,5 +72,9 @@
   "bugs": {
     "url": "https://github.com/vex-chat/libvex-js/issues"
   },
-  "homepage": "https://github.com/vex-chat/libvex-js#readme"
+  "homepage": "https://github.com/vex-chat/libvex-js#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
