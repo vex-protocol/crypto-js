@@ -36,11 +36,12 @@
     }
   },
   "dependencies": {
-    "msgpackr": "1.11.8",
+    "@noble/hashes": "^2.0.1",
     "@stablelib/base64": "^2.0.1",
     "@stablelib/utf8": "^2.1.0",
     "bip39": "^3.1.0",
     "ed2curve": "^0.3.0",
+    "msgpackr": "1.11.8",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
