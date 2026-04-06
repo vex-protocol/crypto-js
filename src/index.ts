@@ -106,7 +106,7 @@ export class XUtils {
   public static uint8ArrToNumber(arr: Uint8Array) {
     let n = 0;
     for (let i = 0; i < arr.length; i++) {
-      n = n * 256 + arr[i];
+      n = n * 256 + arr[i]!;
     }
     return n;
   }
@@ -172,8 +172,8 @@ export class XUtils {
 
     // generate random amount of iterations
     const rand = nacl.randomBytes(2);
-    const N1 = rand[0];
-    const N2 = rand[1];
+    const N1 = rand[0]!;
+    const N2 = rand[1]!;
 
     const iterations = iterationOverride ? iterationOverride : N1 * N2 + OFFSET;
 
