@@ -27,7 +27,7 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "@vex-chat/types": "file:../types-js",
+    "@vex-chat/types": "^1.0.0-rc.1",
     "typescript": ">=5.9.0 || >=6.0.0"
   },
   "peerDependenciesMeta": {
