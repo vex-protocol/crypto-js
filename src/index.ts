@@ -15,15 +15,17 @@ import { Packr } from "msgpackr";
 import nacl from "tweetnacl";
 
 // node:fs is loaded eagerly via an async IIFE (not top-level await, which
-// Hermes does not support). By the time any consumer calls saveKeyFile or
-// loadKeyFile, the promise has resolved and _fs is available.
+// Hermes does not support). Only attempts the import in Node — avoids
+// triggering Vite's "Module fs externalized" warnings in browser/WebView.
 type FsLike = { writeFileSync: typeof import("node:fs").writeFileSync; readFileSync: typeof import("node:fs").readFileSync };
 let _fs: FsLike | undefined;
 const _fsReady: Promise<void> = (async () => {
-  try {
-    _fs = await import("node:fs");
-  } catch {
-    // Not in a Node environment — _fs stays undefined
+  if (typeof globalThis.process !== "undefined" && globalThis.process.versions?.node) {
+    try {
+      _fs = await import("node:fs");
+    } catch {
+      // node:fs not available
+    }
   }
 })();
 function requireFs(): FsLike {
