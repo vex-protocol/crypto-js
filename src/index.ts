@@ -14,14 +14,21 @@ import ed2curve from "ed2curve";
 import { Packr } from "msgpackr";
 import nacl from "tweetnacl";
 
-// node:fs is loaded dynamically so the module can be imported in browser/RN
-// environments without failing at parse time. On Node the top-level await
-// resolves synchronously; on other runtimes _fs stays undefined.
-let _fs: { writeFileSync: typeof import("node:fs").writeFileSync; readFileSync: typeof import("node:fs").readFileSync } | undefined;
-try {
-  _fs = await import("node:fs");
-} catch {
-  // Not in a Node environment — saveKeyFile/loadKeyFile will throw at call time
+// node:fs is loaded eagerly via an async IIFE (not top-level await, which
+// Hermes does not support). By the time any consumer calls saveKeyFile or
+// loadKeyFile, the promise has resolved and _fs is available.
+type FsLike = { writeFileSync: typeof import("node:fs").writeFileSync; readFileSync: typeof import("node:fs").readFileSync };
+let _fs: FsLike | undefined;
+const _fsReady: Promise<void> = (async () => {
+  try {
+    _fs = await import("node:fs");
+  } catch {
+    // Not in a Node environment — _fs stays undefined
+  }
+})();
+function requireFs(): FsLike {
+  if (!_fs) throw new Error("This function requires Node.js (node:fs)");
+  return _fs;
 }
 
 // msgpackr with useRecords:false emits standard msgpack (no nonstandard record extension).
@@ -164,8 +171,7 @@ export class XUtils {
     keyToSave: string,
     iterationOverride?: number,
   ): void => {
-    if (!_fs) throw new Error("saveKeyFile requires Node.js (node:fs)");
-
+    const fs = requireFs();
     const UNENCRYPTED_SIGNKEY = XUtils.decodeHex(keyToSave);
 
     const OFFSET = 1000;
@@ -208,7 +214,7 @@ export class XUtils {
     offset += NONCE.length;
     result.set(ENCRYPTED_SIGNKEY, offset);
 
-    _fs.writeFileSync(path, result);
+    fs.writeFileSync(path, result);
   };
 
   /**
@@ -218,9 +224,8 @@ export class XUtils {
    * @param password The password the file was encrypted with.
    */
   public static loadKeyFile = (path: string, password: string): string => {
-    if (!_fs) throw new Error("loadKeyFile requires Node.js (node:fs)");
-
-    const keyFile = Uint8Array.from(_fs.readFileSync(path));
+    const fs = requireFs();
+    const keyFile = Uint8Array.from(fs.readFileSync(path));
     const ITERATIONS = XUtils.uint8ArrToNumber(keyFile.slice(0, 6));
     const PKBDF_SALT = keyFile.slice(6, 30);
     const ENCRYPTION_NONCE = keyFile.slice(30, 54);
