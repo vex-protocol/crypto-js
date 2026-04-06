@@ -14,24 +14,6 @@ import ed2curve from "ed2curve";
 import { Packr } from "msgpackr";
 import nacl from "tweetnacl";
 
-// node:fs is loaded eagerly via an async IIFE (not top-level await, which
-// Hermes does not support). Only attempts the import in Node — avoids
-// triggering Vite's "Module fs externalized" warnings in browser/WebView.
-type FsLike = { writeFileSync: typeof import("node:fs").writeFileSync; readFileSync: typeof import("node:fs").readFileSync };
-let _fs: FsLike | undefined;
-const _fsReady: Promise<void> = (async () => {
-  if (typeof globalThis.process !== "undefined" && globalThis.process.versions?.node) {
-    try {
-      _fs = await import("node:fs");
-    } catch {
-      // node:fs not available
-    }
-  }
-})();
-function requireFs(): FsLike {
-  if (!_fs) throw new Error("This function requires Node.js (node:fs)");
-  return _fs;
-}
 
 // msgpackr with useRecords:false emits standard msgpack (no nonstandard record extension).
 // moreTypes:false keeps the extension set to only what other decoders understand.
@@ -162,94 +144,6 @@ export class XUtils {
    * Encrypts a secret key with a password and saves it as a file.
    *
    * @param path The path to save the keyfile.
-   * @param password The password to encrypt the keyfile with.
-   * @param keyToSave The key to encrypt.
-   * @param iterationOverride An optional override if you'd prefer to manually
-   * select your iterations rather than having a random amount selected.
-   */
-  public static saveKeyFile = (
-    path: string,
-    password: string,
-    keyToSave: string,
-    iterationOverride?: number,
-  ): void => {
-    const fs = requireFs();
-    const UNENCRYPTED_SIGNKEY = XUtils.decodeHex(keyToSave);
-
-    const OFFSET = 1000;
-
-    // generate random amount of iterations
-    const rand = nacl.randomBytes(2);
-    const N1 = rand[0]!;
-    const N2 = rand[1]!;
-
-    const iterations = iterationOverride ? iterationOverride : N1 * N2 + OFFSET;
-
-    const ITERATIONS = XUtils.numberToUint8Arr(iterations);
-
-    const PKBDF_SALT = xMakeNonce();
-
-    const ENCRYPTION_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, {
-      c: iterations,
-      dkLen: 32,
-    });
-    const NONCE = xMakeNonce();
-
-    const ENCRYPTED_SIGNKEY = nacl.secretbox(
-      UNENCRYPTED_SIGNKEY,
-      NONCE,
-      ENCRYPTION_KEY,
-    );
-
-    const result = new Uint8Array(
-      ITERATIONS.length +
-        PKBDF_SALT.length +
-        NONCE.length +
-        ENCRYPTED_SIGNKEY.length,
-    );
-    let offset = 0;
-    result.set(ITERATIONS, offset);
-    offset += ITERATIONS.length;
-    result.set(PKBDF_SALT, offset);
-    offset += PKBDF_SALT.length;
-    result.set(NONCE, offset);
-    offset += NONCE.length;
-    result.set(ENCRYPTED_SIGNKEY, offset);
-
-    fs.writeFileSync(path, result);
-  };
-
-  /**
-   * Decrypts and returns a secret key stored in a file with saveKeyFile().
-   *
-   * @param path The path of the file.
-   * @param password The password the file was encrypted with.
-   */
-  public static loadKeyFile = (path: string, password: string): string => {
-    const fs = requireFs();
-    const keyFile = Uint8Array.from(fs.readFileSync(path));
-    const ITERATIONS = XUtils.uint8ArrToNumber(keyFile.slice(0, 6));
-    const PKBDF_SALT = keyFile.slice(6, 30);
-    const ENCRYPTION_NONCE = keyFile.slice(30, 54);
-    const ENCRYPTED_KEY = keyFile.slice(54);
-    const DERIVED_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, {
-      c: ITERATIONS,
-      dkLen: 32,
-    });
-
-    const DECRYPTED_SIGNKEY = nacl.secretbox.open(
-      ENCRYPTED_KEY,
-      ENCRYPTION_NONCE,
-      DERIVED_KEY,
-    );
-
-    if (!DECRYPTED_SIGNKEY) {
-      throw new Error("Decryption failed. Wrong password?");
-    } else {
-      return XUtils.encodeHex(DECRYPTED_SIGNKEY);
-    }
-  };
-
   /**
    * Decodes a hex string into a Uint8Array.
    *
