@@ -27,7 +27,7 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "@vex-chat/types": "^1.0.0-rc.1",
+    "@vex-chat/types": "file:../types-js",
     "typescript": ">=5.9.0 || >=6.0.0"
   },
   "peerDependenciesMeta": {
@@ -51,7 +51,7 @@
     "@types/node": "^24.12.2",
     "@typescript-eslint/eslint-plugin": "^8.57.1",
     "@typescript-eslint/parser": "^8.57.1",
-    "@vex-chat/types": "^1.0.0-rc.1",
+    "@vex-chat/types": "file:../types-js",
     "eslint": "^10.1.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.0.0",
