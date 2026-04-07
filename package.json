@@ -1,6 +1,6 @@
 {
     "name": "@vex-chat/crypto",
-    "version": "1.1.0-rc.2",
+    "version": "1.1.1",
     "description": "Crypto primitives for Vex",
     "type": "module",
     "sideEffects": false,
@@ -53,7 +53,7 @@
         "@types/node": "^24.12.2",
         "@typescript-eslint/eslint-plugin": "^8.57.1",
         "@typescript-eslint/parser": "^8.57.1",
-        "@vex-chat/types": "^1.0.0-rc.2",
+        "@vex-chat/types": "^1.0.1",
         "eslint": "^10.1.0",
         "eslint-config-prettier": "^9.0.0",
         "husky": "^9.0.0",
