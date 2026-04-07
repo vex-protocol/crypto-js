@@ -6,6 +6,7 @@
   },
   "changesets": [
     "migrate-to-native-crypto",
-    "modernize-toolchain"
+    "modernize-toolchain",
+    "platform-portable-crypto"
   ]
 }
