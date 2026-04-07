@@ -14,7 +14,6 @@ test("numberToUint8Arr", () => {
         [255, 255, 255, 255, 255, 255],
     ];
 
-    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < numbers.length; i++) {
         const arr = numberToUint8Arr(numbers[i]);
         expect(bytesEqual(arr, Buffer.from(buffers[i]))).toBe(true);
