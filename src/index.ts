@@ -458,7 +458,6 @@ function isEven(value: bigint) {
 /**
  * @ignore
  */
-// tslint:disable-next-line: interface-name
 interface XConstants {
     CURVE: "X25519";
     HASH: "SHA-512";

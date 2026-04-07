@@ -14,7 +14,6 @@ test("uint8ArrToNumber", () => {
         [255, 255, 255, 255, 255, 255],
     ];
 
-    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < numbers.length; i++) {
         const num1 = uint8ArrToNumber(Buffer.from(buffers[i]));
         const num2 = numbers[i];
