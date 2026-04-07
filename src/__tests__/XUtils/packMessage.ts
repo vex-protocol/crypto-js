@@ -3,20 +3,20 @@ import { XUtils } from "../../index.js";
 const { packMessage, unpackMessage, emptyHeader } = XUtils;
 
 test("packMessage Round Trip", () => {
-  const testMessage: IResourceMsg = {
-    type: "resource",
-    resourceType: "server",
-    action: "create",
-    transmissionID: "8154ac29-54fb-407c-8353-0f67742bb7c4",
-    data: "A Server Name",
-  };
+    const testMessage: IResourceMsg = {
+        type: "resource",
+        resourceType: "server",
+        action: "create",
+        transmissionID: "8154ac29-54fb-407c-8353-0f67742bb7c4",
+        data: "A Server Name",
+    };
 
-  // Pack the message using the new implementation
-  const packedBytes = packMessage(testMessage, emptyHeader());
+    // Pack the message using the new implementation
+    const packedBytes = packMessage(testMessage, emptyHeader());
 
-  // Unpack it immediately to verify consistency (Round Trip)
-  const [header, body] = unpackMessage(packedBytes);
+    // Unpack it immediately to verify consistency (Round Trip)
+    const [header, body] = unpackMessage(packedBytes);
 
-  expect(XUtils.bytesEqual(header, emptyHeader())).toBe(true);
-  expect(body).toEqual(testMessage);
+    expect(XUtils.bytesEqual(header, emptyHeader())).toBe(true);
+    expect(body).toEqual(testMessage);
 });

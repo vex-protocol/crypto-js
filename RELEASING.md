@@ -29,6 +29,7 @@ npx changeset
 ```
 
 This prompts you to:
+
 - Select the package (`@vex-chat/crypto`)
 - Choose bump type (patch / minor / major)
 - Write a short summary of the change
@@ -46,11 +47,12 @@ git push -u origin my-feature
 ### 4. Merge to master
 
 After merge, the **Release** GitHub Action will:
+
 1. Detect pending changesets
 2. Open a **"chore: version packages"** PR with bumped version + updated CHANGELOG.md
 3. When you merge that PR, it publishes to npm automatically
 
-```
+````
 
 ## Release Candidates
 
@@ -67,7 +69,7 @@ npx changeset publish
 npx changeset pre exit
 npx changeset version          # produces 0.9.0
 npx changeset publish          # publishes as @latest
-```
+````
 
 ## GitHub Secrets Required
 
