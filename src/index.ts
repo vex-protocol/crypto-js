@@ -145,6 +145,68 @@ export class XUtils {
    *
    * @param path The path to save the keyfile.
   /**
+   * Encrypts a secret key into a portable binary format.
+   * The result can be written to disk, sent over the network, etc.
+   * No I/O — the caller handles persistence.
+   *
+   * Format: [iterations(6)|salt(24)|nonce(24)|ciphertext(N)]
+   *
+   * @param password The password to derive the encryption key from.
+   * @param keyToSave The hex-encoded secret key to encrypt.
+   * @param iterationOverride Optional PBKDF2 iteration count (random if omitted).
+   * @returns The encrypted key data as a Uint8Array.
+   */
+  public static encryptKeyData = (
+    password: string,
+    keyToSave: string,
+    iterationOverride?: number,
+  ): Uint8Array => {
+    const UNENCRYPTED_SIGNKEY = XUtils.decodeHex(keyToSave);
+    const OFFSET = 1000;
+    const rand = nacl.randomBytes(2);
+    const N1 = rand[0]!;
+    const N2 = rand[1]!;
+    const iterations = iterationOverride ? iterationOverride : N1 * N2 + OFFSET;
+    const ITERATIONS = XUtils.numberToUint8Arr(iterations);
+    const PKBDF_SALT = xMakeNonce();
+    const ENCRYPTION_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, { c: iterations, dkLen: 32 });
+    const NONCE = xMakeNonce();
+    const ENCRYPTED_SIGNKEY = nacl.secretbox(UNENCRYPTED_SIGNKEY, NONCE, ENCRYPTION_KEY);
+
+    const result = new Uint8Array(
+      ITERATIONS.length + PKBDF_SALT.length + NONCE.length + ENCRYPTED_SIGNKEY.length,
+    );
+    let offset = 0;
+    result.set(ITERATIONS, offset); offset += ITERATIONS.length;
+    result.set(PKBDF_SALT, offset); offset += PKBDF_SALT.length;
+    result.set(NONCE, offset); offset += NONCE.length;
+    result.set(ENCRYPTED_SIGNKEY, offset);
+    return result;
+  };
+
+  /**
+   * Decrypts a secret key from the binary format produced by encryptKeyData().
+   * No I/O — the caller handles reading the data.
+   *
+   * @param keyData The encrypted key data as a Uint8Array.
+   * @param password The password used to encrypt.
+   * @returns The hex-encoded secret key.
+   */
+  public static decryptKeyData = (keyData: Uint8Array, password: string): string => {
+    const ITERATIONS = XUtils.uint8ArrToNumber(keyData.slice(0, 6));
+    const PKBDF_SALT = keyData.slice(6, 30);
+    const ENCRYPTION_NONCE = keyData.slice(30, 54);
+    const ENCRYPTED_KEY = keyData.slice(54);
+    const DERIVED_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, { c: ITERATIONS, dkLen: 32 });
+    const DECRYPTED_SIGNKEY = nacl.secretbox.open(ENCRYPTED_KEY, ENCRYPTION_NONCE, DERIVED_KEY);
+
+    if (!DECRYPTED_SIGNKEY) {
+      throw new Error("Decryption failed. Wrong password?");
+    }
+    return XUtils.encodeHex(DECRYPTED_SIGNKEY);
+  };
+
+  /**
    * Decodes a hex string into a Uint8Array.
    *
    * @returns The Uint8Array.
