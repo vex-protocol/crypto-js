@@ -1,8 +1,8 @@
 node_modules
 ./dist
 dist
+docs
 **/*.log
 .env
 *.tgz
-yalc.lock
-.yalc
+.npmrc
