@@ -95,8 +95,8 @@ export class XUtils {
      */
     public static uint8ArrToNumber(arr: Uint8Array) {
         let n = 0;
-        for (let i = 0; i < arr.length; i++) {
-            n = n * 256 + arr[i]!;
+        for (const byte of arr) {
+            n = n * 256 + byte;
         }
         return n;
     }
@@ -126,9 +126,9 @@ export class XUtils {
      * @param arr The array to convert.
      * @returns the packed message.
      */
-    public static packMessage(msg: any, header?: Uint8Array) {
+    public static packMessage(msg: unknown, header?: Uint8Array) {
         const msgb = msgpackEncode(msg);
-        const msgh = header || XUtils.emptyHeader();
+        const msgh = header ?? XUtils.emptyHeader();
         return xConcat(msgh, msgb);
     }
 
@@ -165,8 +165,7 @@ export class XUtils {
         const UNENCRYPTED_SIGNKEY = XUtils.decodeHex(keyToSave);
         const OFFSET = 1000;
         const rand = nacl.randomBytes(2);
-        const N1 = rand[0]!;
-        const N2 = rand[1]!;
+        const [N1 = 0, N2 = 0] = rand;
         const iterations = iterationOverride
             ? iterationOverride
             : N1 * N2 + OFFSET;
@@ -242,8 +241,9 @@ export class XUtils {
             return new Uint8Array();
         }
 
+        const matches = hexString.match(/.{1,2}/g) ?? [];
         return new Uint8Array(
-            hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
+            matches.map((byte) => parseInt(byte, 16)),
         );
     }
 
@@ -279,7 +279,7 @@ export function xMnemonic(
  * @param msg the message to create the HMAC of
  * @param SK the secret key to create the HMAC with
  */
-export function xHMAC(msg: any, SK: Uint8Array) {
+export function xHMAC(msg: unknown, SK: Uint8Array) {
     const packedMsg = msgpackEncode(msg);
     return hmac(sha256, SK, packedMsg);
 }
