@@ -33,5 +33,5 @@
         "skipLibCheck": true
     },
     "include": ["src/**/*"],
-    "exclude": ["./scripts/*", "./dist/*", "src/__tests__"]
+    "exclude": ["./scripts/*", "./dist/*"]
 }

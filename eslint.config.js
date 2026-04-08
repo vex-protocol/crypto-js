@@ -1,9 +1,9 @@
+import vitest from "@vitest/eslint-plugin";
 import perfectionist from "eslint-plugin-perfectionist";
 import tseslint from "typescript-eslint";
-import eslintConfigPrettier from "eslint-config-prettier";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default tseslint.config(
-    { ignores: ["src/__tests__/**"] },
     ...tseslint.configs.strictTypeChecked,
     perfectionist.configs["recommended-natural"],
     {
@@ -35,6 +35,23 @@ export default tseslint.config(
             "@typescript-eslint/no-import-type-side-effects": "error",
             "@typescript-eslint/prefer-readonly": "error",
             "@typescript-eslint/require-array-sort-compare": "error",
+        },
+    },
+    {
+        files: ["src/__tests__/**/*.ts"],
+        plugins: { vitest },
+        rules: {
+            ...vitest.configs.recommended.rules,
+            // Relax strict rules for tests
+            "@typescript-eslint/no-unsafe-type-assertion": "off",
+            "@typescript-eslint/strict-boolean-expressions": "off",
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/no-unsafe-call": "off",
+            "@typescript-eslint/no-unsafe-member-access": "off",
+            "@typescript-eslint/no-unsafe-assignment": "off",
+            "@typescript-eslint/unbound-method": "off",
+            "@typescript-eslint/no-unnecessary-condition": "off",
+            "vitest/no-conditional-expect": "warn",
         },
     },
     eslintConfigPrettier,

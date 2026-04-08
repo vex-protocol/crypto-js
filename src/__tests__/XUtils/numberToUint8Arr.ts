@@ -1,5 +1,5 @@
 import { XUtils } from "../../index.js";
-const { numberToUint8Arr, bytesEqual } = XUtils;
+const { bytesEqual, numberToUint8Arr } = XUtils;
 
 test("numberToUint8Arr", () => {
     const numbers = [
