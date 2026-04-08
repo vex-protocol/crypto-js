@@ -1,8 +1,11 @@
+import perfectionist from "eslint-plugin-perfectionist";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
+    { ignores: ["src/__tests__/**"] },
     ...tseslint.configs.strictTypeChecked,
+    perfectionist.configs["recommended-natural"],
     {
         languageOptions: {
             parserOptions: {
@@ -29,8 +32,6 @@ export default tseslint.config(
                 },
             ],
             "@typescript-eslint/consistent-type-exports": "error",
-            "@typescript-eslint/explicit-function-return-type": "error",
-            "@typescript-eslint/explicit-module-boundary-types": "error",
             "@typescript-eslint/no-import-type-side-effects": "error",
             "@typescript-eslint/prefer-readonly": "error",
             "@typescript-eslint/require-array-sort-compare": "error",
