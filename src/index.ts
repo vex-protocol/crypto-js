@@ -428,6 +428,67 @@ export function xKDF(IKM: Uint8Array): Uint8Array {
     );
 }
 
+// ── Key pair type ───────────────────────────────────────────────────────────
+
+/** Ed25519 or X25519 key pair. Structurally identical to nacl.SignKeyPair / nacl.BoxKeyPair. */
+export interface KeyPair {
+    publicKey: Uint8Array;
+    secretKey: Uint8Array;
+}
+
+// ── Key generation ─────────────────────────────────────────────────────────
+
+/** Generate a fresh Ed25519 signing key pair. */
+export function xSignKeyPair(): KeyPair {
+    return nacl.sign.keyPair();
+}
+
+/** Restore an Ed25519 signing key pair from a 64-byte secret key. */
+export function xSignKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
+    return nacl.sign.keyPair.fromSecretKey(secretKey);
+}
+
+/** Generate a fresh X25519 box key pair. */
+export function xBoxKeyPair(): KeyPair {
+    return nacl.box.keyPair();
+}
+
+/** Restore an X25519 box key pair from a 32-byte secret key. */
+export function xBoxKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
+    return nacl.box.keyPair.fromSecretKey(secretKey);
+}
+
+// ── Signing ────────────────────────────────────────────────────────────────
+
+/** Sign a message with an Ed25519 secret key. Returns signed message (64-byte signature prefix + message). */
+export function xSign(message: Uint8Array, secretKey: Uint8Array): Uint8Array {
+    return nacl.sign(message, secretKey);
+}
+
+/** Verify and open a signed message. Returns the original message, or null if verification fails. */
+export function xSignOpen(signedMessage: Uint8Array, publicKey: Uint8Array): Uint8Array | null {
+    return nacl.sign.open(signedMessage, publicKey);
+}
+
+// ── Symmetric encryption (XSalsa20-Poly1305) ──────────────────────────────
+
+/** Encrypt with a shared secret key. */
+export function xSecretbox(plaintext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
+    return nacl.secretbox(plaintext, nonce, key);
+}
+
+/** Decrypt with a shared secret key. Returns null if authentication fails. */
+export function xSecretboxOpen(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array | null {
+    return nacl.secretbox.open(ciphertext, nonce, key);
+}
+
+// ── Random ─────────────────────────────────────────────────────────────────
+
+/** Cryptographically secure random bytes. */
+export function xRandomBytes(length: number): Uint8Array {
+    return nacl.randomBytes(length);
+}
+
 /**
  * Returns a 24 byte random nonce of cryptographic quality.
  */
@@ -457,12 +518,7 @@ function keyLength(curve: "X448" | "X25519"): number {
  * @ignore
  */
 function xMakeSalt(curve: "X448" | "X25519"): Uint8Array {
-    const saltLength = keyLength(curve);
-
-    const salt = new Uint8Array(saltLength);
-    for (let i = 0; i < saltLength; i++) {
-        salt.set([0xff]);
-    }
-
+    const salt = new Uint8Array(keyLength(curve));
+    salt.fill(0xff);
     return salt;
 }

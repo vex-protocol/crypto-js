@@ -26,6 +26,8 @@
 
         "isolatedModules": true,
         "verbatimModuleSyntax": true,
+        "erasableSyntaxOnly": true,
+        "noUncheckedSideEffectImports": true,
         "forceConsistentCasingInFileNames": true,
 
         "types": ["node"],
