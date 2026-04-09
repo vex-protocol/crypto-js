@@ -1,6 +1,6 @@
 import type { BaseMsg } from "@vex-chat/types";
 
-import { baseMsg } from "@vex-chat/types";
+import { z } from "zod/v4";
 
 import { hkdf } from "@noble/hashes/hkdf.js";
 import { hmac } from "@noble/hashes/hmac.js";
@@ -256,9 +256,15 @@ export class XUtils {
     ): [Uint8Array, BaseMsg] {
         const msgp = Uint8Array.from(msg);
         const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
-        const msgb = baseMsg.passthrough().parse(
-            msgpackDecode(msgp.slice(xConstants.HEADER_SIZE)),
-        );
+        // Validate base fields exist, keep all extra fields for the caller to narrow
+        const raw = msgpackDecode(msgp.slice(xConstants.HEADER_SIZE));
+        const msgb = z
+            .object({
+                transmissionID: z.string(),
+                type: z.string(),
+            })
+            .passthrough()
+            .parse(raw) as BaseMsg;
 
         return [msgh, msgb];
     }
