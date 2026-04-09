@@ -25,6 +25,7 @@
     },
     "packageManager": "npm@10.9.2",
     "scripts": {
+        "prepare": "husky",
         "preinstall": "npx only-allow npm",
         "build": "tsc -p tsconfig.build.json",
         "build:clean": "rimraf dist && tsc -p tsconfig.build.json",
@@ -75,8 +76,11 @@
         "vitest": "^3.0.0"
     },
     "lint-staged": {
-        "*.ts": [
+        "src/**/*.ts": [
             "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{json,md}": [
             "prettier --write"
         ]
     },
