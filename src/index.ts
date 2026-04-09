@@ -1,4 +1,4 @@
-import type { IBaseMsg } from "@vex-chat/types";
+import type { BaseMsg } from "@vex-chat/types";
 
 import { hkdf } from "@noble/hashes/hkdf.js";
 import { hmac } from "@noble/hashes/hmac.js";
@@ -249,12 +249,12 @@ export class XUtils {
      */
     public static unpackMessage(
         msg: Buffer | Uint8Array,
-    ): [Uint8Array, IBaseMsg] {
+    ): [Uint8Array, BaseMsg] {
         const msgp = Uint8Array.from(msg);
         const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
         const msgb = msgpackDecode(
             msgp.slice(xConstants.HEADER_SIZE),
-        ) as IBaseMsg;
+        ) as BaseMsg;
 
         return [msgh, msgb];
     }

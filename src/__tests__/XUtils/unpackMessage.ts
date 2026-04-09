@@ -1,11 +1,11 @@
-import type { IResourceMsg } from "@vex-chat/types";
+import type { ResourceMsg } from "@vex-chat/types";
 
 import { XUtils } from "../../index.js";
 const { bytesEqual, emptyHeader, unpackMessage } = XUtils;
 
 test("unpackMessage (Legacy Compatibility)", () => {
     const testHeader = emptyHeader();
-    const testMessage: IResourceMsg = {
+    const testMessage: ResourceMsg = {
         action: "create",
         data: "A Server Name",
         resourceType: "server",
