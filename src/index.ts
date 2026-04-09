@@ -1,5 +1,7 @@
 import type { BaseMsg } from "@vex-chat/types";
 
+import { baseMsg } from "@vex-chat/types";
+
 import { hkdf } from "@noble/hashes/hkdf.js";
 import { hmac } from "@noble/hashes/hmac.js";
 import { pbkdf2 as noblePbkdf2 } from "@noble/hashes/pbkdf2.js";
@@ -31,6 +33,7 @@ export const XKeyConvert = ed2curve;
  * Provides several methods that are useful in working with bytes and
  * vex messages.
  */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class -- intentional static utility namespace (public API surface)
 export class XUtils {
     public static decodeBase64 = decodeBase64;
 
@@ -107,7 +110,7 @@ export class XUtils {
             DERIVED_KEY,
         );
 
-        if (!DECRYPTED_SIGNKEY) {
+        if (DECRYPTED_SIGNKEY === null) {
             throw new Error("Decryption failed. Wrong password?");
         }
         return XUtils.encodeHex(DECRYPTED_SIGNKEY);
@@ -159,9 +162,10 @@ export class XUtils {
         const OFFSET = 1000;
         const rand = nacl.randomBytes(2);
         const [N1 = 0, N2 = 0] = rand;
-        const iterations = iterationOverride
-            ? iterationOverride
-            : N1 * N2 + OFFSET;
+        const iterations =
+            iterationOverride !== undefined && iterationOverride !== 0
+                ? iterationOverride
+                : N1 * N2 + OFFSET;
         const ITERATIONS = XUtils.numberToUint8Arr(iterations);
         const PKBDF_SALT = xMakeNonce();
         const ENCRYPTION_KEY = noblePbkdf2(sha512, password, PKBDF_SALT, {
@@ -203,7 +207,7 @@ export class XUtils {
     public static numberToUint8Arr(n: number): Uint8Array {
         if (n < 0 || n > 281474976710655) {
             throw new Error(
-                "Expected integer 0 < n < 281474976710655, received " + n,
+                "Expected integer 0 < n < 281474976710655, received " + String(n),
             );
         }
 
@@ -252,9 +256,9 @@ export class XUtils {
     ): [Uint8Array, BaseMsg] {
         const msgp = Uint8Array.from(msg);
         const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
-        const msgb = msgpackDecode(
-            msgp.slice(xConstants.HEADER_SIZE),
-        ) as BaseMsg;
+        const msgb = baseMsg.passthrough().parse(
+            msgpackDecode(msgp.slice(xConstants.HEADER_SIZE)),
+        );
 
         return [msgh, msgb];
     }
@@ -296,16 +300,10 @@ export const xConstants: XConstants = {
     MIN_OTK_SUPPLY: 100,
 };
 
-/**
- * @ignore
- */
-interface XConstants {
-    CURVE: "X25519";
-    HASH: "SHA-512";
-    HEADER_SIZE: 32;
-    INFO: string;
-    KEY_LENGTH: 32 | 57;
-    MIN_OTK_SUPPLY: number;
+/** Ed25519 or X25519 key pair. Structurally identical to nacl.SignKeyPair / nacl.BoxKeyPair. */
+export interface KeyPair {
+    publicKey: Uint8Array;
+    secretKey: Uint8Array;
 }
 
 /**
@@ -325,6 +323,28 @@ interface XConstants {
 // }
 
 /**
+ * @ignore
+ */
+interface XConstants {
+    CURVE: "X25519";
+    HASH: "SHA-512";
+    HEADER_SIZE: 32;
+    INFO: string;
+    KEY_LENGTH: 32 | 57;
+    MIN_OTK_SUPPLY: number;
+}
+
+/** Generate a fresh X25519 box key pair. */
+export function xBoxKeyPair(): KeyPair {
+    return nacl.box.keyPair();
+}
+
+/** Restore an X25519 box key pair from a 32-byte secret key. */
+export function xBoxKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
+    return nacl.box.keyPair.fromSecretKey(secretKey);
+}
+
+/**
  * Concatanates multiple Uint8Arrays.
  *
  * @param arrays As many Uint8Arrays as you would like to concatanate.
@@ -332,7 +352,7 @@ interface XConstants {
 export function xConcat(...arrays: Uint8Array[]): Uint8Array {
     const totalLength = arrays.reduce((acc, value) => acc + value.length, 0);
 
-    if (!arrays.length) {
+    if (arrays.length === 0) {
         return new Uint8Array();
     }
 
@@ -364,6 +384,8 @@ export function xDH(
     return nacl.box.before(theirPublicKey, myPrivateKey);
 }
 
+// ── Key pair type ───────────────────────────────────────────────────────────
+
 /**
  * Encode an X25519 or X448 public key PK into a byte sequence.
  * The encoding consists of 0 or 1 to represent the type of curve, followed by l
@@ -377,7 +399,7 @@ export function xEncode(
     if (publicKey.length !== 32) {
         throw new Error(
             "Invalid key length, received key of length " +
-                publicKey.length +
+                String(publicKey.length) +
                 " and expected length 32.",
         );
     }
@@ -408,6 +430,8 @@ export function xEncode(
     return Uint8Array.from(bytes);
 }
 
+// ── Key generation ─────────────────────────────────────────────────────────
+
 /**
  * Hashes some data.
  *
@@ -428,49 +452,19 @@ export function xKDF(IKM: Uint8Array): Uint8Array {
     );
 }
 
-// ── Key pair type ───────────────────────────────────────────────────────────
-
-/** Ed25519 or X25519 key pair. Structurally identical to nacl.SignKeyPair / nacl.BoxKeyPair. */
-export interface KeyPair {
-    publicKey: Uint8Array;
-    secretKey: Uint8Array;
+/**
+ * Returns a 24 byte random nonce of cryptographic quality.
+ */
+export function xMakeNonce(): Uint8Array {
+    return nacl.randomBytes(24);
 }
 
-// ── Key generation ─────────────────────────────────────────────────────────
-
-/** Generate a fresh Ed25519 signing key pair. */
-export function xSignKeyPair(): KeyPair {
-    return nacl.sign.keyPair();
-}
-
-/** Restore an Ed25519 signing key pair from a 64-byte secret key. */
-export function xSignKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
-    return nacl.sign.keyPair.fromSecretKey(secretKey);
-}
-
-/** Generate a fresh X25519 box key pair. */
-export function xBoxKeyPair(): KeyPair {
-    return nacl.box.keyPair();
-}
-
-/** Restore an X25519 box key pair from a 32-byte secret key. */
-export function xBoxKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
-    return nacl.box.keyPair.fromSecretKey(secretKey);
+/** Cryptographically secure random bytes. */
+export function xRandomBytes(length: number): Uint8Array {
+    return nacl.randomBytes(length);
 }
 
 // ── Signing ────────────────────────────────────────────────────────────────
-
-/** Sign a message with an Ed25519 secret key. Returns signed message (64-byte signature prefix + message). */
-export function xSign(message: Uint8Array, secretKey: Uint8Array): Uint8Array {
-    return nacl.sign(message, secretKey);
-}
-
-/** Verify and open a signed message. Returns the original message, or null if verification fails. */
-export function xSignOpen(signedMessage: Uint8Array, publicKey: Uint8Array): Uint8Array | null {
-    return nacl.sign.open(signedMessage, publicKey);
-}
-
-// ── Symmetric encryption (XSalsa20-Poly1305) ──────────────────────────────
 
 /** Encrypt with a shared secret key. */
 export function xSecretbox(plaintext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
@@ -478,22 +472,32 @@ export function xSecretbox(plaintext: Uint8Array, nonce: Uint8Array, key: Uint8A
 }
 
 /** Decrypt with a shared secret key. Returns null if authentication fails. */
-export function xSecretboxOpen(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array | null {
+export function xSecretboxOpen(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): null | Uint8Array {
     return nacl.secretbox.open(ciphertext, nonce, key);
+}
+
+// ── Symmetric encryption (XSalsa20-Poly1305) ──────────────────────────────
+
+/** Sign a message with an Ed25519 secret key. Returns signed message (64-byte signature prefix + message). */
+export function xSign(message: Uint8Array, secretKey: Uint8Array): Uint8Array {
+    return nacl.sign(message, secretKey);
+}
+
+/** Generate a fresh Ed25519 signing key pair. */
+export function xSignKeyPair(): KeyPair {
+    return nacl.sign.keyPair();
 }
 
 // ── Random ─────────────────────────────────────────────────────────────────
 
-/** Cryptographically secure random bytes. */
-export function xRandomBytes(length: number): Uint8Array {
-    return nacl.randomBytes(length);
+/** Restore an Ed25519 signing key pair from a 64-byte secret key. */
+export function xSignKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
+    return nacl.sign.keyPair.fromSecretKey(secretKey);
 }
 
-/**
- * Returns a 24 byte random nonce of cryptographic quality.
- */
-export function xMakeNonce(): Uint8Array {
-    return nacl.randomBytes(24);
+/** Verify and open a signed message. Returns the original message, or null if verification fails. */
+export function xSignOpen(signedMessage: Uint8Array, publicKey: Uint8Array): null | Uint8Array {
+    return nacl.sign.open(signedMessage, publicKey);
 }
 
 /**
