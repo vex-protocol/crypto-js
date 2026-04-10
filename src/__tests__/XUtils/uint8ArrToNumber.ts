@@ -1,22 +1,19 @@
 import { XUtils } from "../../index.js";
+
 const { uint8ArrToNumber } = XUtils;
 
 test("uint8ArrToNumber", () => {
-    const numbers = [
-        255, 65535, 16777215, 4294967295, 1099511627775, 281474976710655,
-    ];
-    const buffers = [
-        [0, 0, 0, 0, 0, 255],
-        [0, 0, 0, 0, 255, 255],
-        [0, 0, 0, 255, 255, 255],
-        [0, 0, 255, 255, 255, 255],
-        [0, 255, 255, 255, 255, 255],
-        [255, 255, 255, 255, 255, 255],
+    const cases: [number, number[]][] = [
+        [255, [0, 0, 0, 0, 0, 255]],
+        [65535, [0, 0, 0, 0, 255, 255]],
+        [16777215, [0, 0, 0, 255, 255, 255]],
+        [4294967295, [0, 0, 255, 255, 255, 255]],
+        [1099511627775, [0, 255, 255, 255, 255, 255]],
+        [281474976710655, [255, 255, 255, 255, 255, 255]],
     ];
 
-    for (let i = 0; i < numbers.length; i++) {
-        const num1 = uint8ArrToNumber(Buffer.from(buffers[i]));
-        const num2 = numbers[i];
-        expect(num1 === num2).toBe(true);
+    for (const [expected, buffer] of cases) {
+        const actual = uint8ArrToNumber(Buffer.from(buffer));
+        expect(actual === expected).toBe(true);
     }
 });

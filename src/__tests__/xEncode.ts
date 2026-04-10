@@ -1,4 +1,4 @@
-import { xEncode, XUtils } from "..";
+import { xEncode, XUtils } from "../index.js";
 
 test("xEncode", () => {
     const PK =

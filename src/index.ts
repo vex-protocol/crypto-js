@@ -1,7 +1,5 @@
 import type { BaseMsg } from "@vex-chat/types";
 
-import { z } from "zod/v4";
-
 import { hkdf } from "@noble/hashes/hkdf.js";
 import { hmac } from "@noble/hashes/hmac.js";
 import { pbkdf2 as noblePbkdf2 } from "@noble/hashes/pbkdf2.js";
@@ -15,6 +13,7 @@ import * as bip39 from "bip39";
 import ed2curve from "ed2curve";
 import { Packr } from "msgpackr";
 import nacl from "tweetnacl";
+import { z } from "zod/v4";
 
 // msgpackr with useRecords:false emits standard msgpack (no nonstandard record extension).
 // moreTypes:false keeps the extension set to only what other decoders understand.
@@ -79,9 +78,7 @@ export class XUtils {
         }
 
         const matches = hexString.match(/.{1,2}/g) ?? [];
-        return new Uint8Array(
-            matches.map((byte) => parseInt(byte, 16)),
-        );
+        return new Uint8Array(matches.map((byte) => parseInt(byte, 16)));
     }
 
     /**
@@ -207,7 +204,8 @@ export class XUtils {
     public static numberToUint8Arr(n: number): Uint8Array {
         if (n < 0 || n > 281474976710655) {
             throw new Error(
-                "Expected integer 0 < n < 281474976710655, received " + String(n),
+                "Expected integer 0 < n < 281474976710655, received " +
+                    String(n),
             );
         }
 
@@ -257,13 +255,13 @@ export class XUtils {
         const msgp = Uint8Array.from(msg);
         const msgh = msgp.slice(0, xConstants.HEADER_SIZE);
         // Validate base fields exist, keep all extra fields for the caller to narrow
-        const raw = msgpackDecode(msgp.slice(xConstants.HEADER_SIZE));
+        const raw: unknown = msgpackDecode(msgp.slice(xConstants.HEADER_SIZE));
         const msgb = z
             .object({
                 transmissionID: z.string(),
                 type: z.string(),
             })
-            .passthrough()
+            .loose()
             .parse(raw) as BaseMsg;
 
         return [msgh, msgb];
@@ -287,10 +285,7 @@ export function xHMAC(msg: unknown, SK: Uint8Array) {
  * @param entropy The bytes to derive the wordlist from.
  * @param wordList Optional, override the wordlist. See bip39 docs for details.
  */
-export function xMnemonic(
-    entropy: Uint8Array,
-    wordList?: string[]  ,
-) {
+export function xMnemonic(entropy: Uint8Array, wordList?: string[]) {
     return bip39.entropyToMnemonic(XUtils.encodeHex(entropy), wordList);
 }
 
@@ -473,12 +468,20 @@ export function xRandomBytes(length: number): Uint8Array {
 // ── Signing ────────────────────────────────────────────────────────────────
 
 /** Encrypt with a shared secret key. */
-export function xSecretbox(plaintext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
+export function xSecretbox(
+    plaintext: Uint8Array,
+    nonce: Uint8Array,
+    key: Uint8Array,
+): Uint8Array {
     return nacl.secretbox(plaintext, nonce, key);
 }
 
 /** Decrypt with a shared secret key. Returns null if authentication fails. */
-export function xSecretboxOpen(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): null | Uint8Array {
+export function xSecretboxOpen(
+    ciphertext: Uint8Array,
+    nonce: Uint8Array,
+    key: Uint8Array,
+): null | Uint8Array {
     return nacl.secretbox.open(ciphertext, nonce, key);
 }
 
@@ -502,7 +505,10 @@ export function xSignKeyPairFromSecret(secretKey: Uint8Array): KeyPair {
 }
 
 /** Verify and open a signed message. Returns the original message, or null if verification fails. */
-export function xSignOpen(signedMessage: Uint8Array, publicKey: Uint8Array): null | Uint8Array {
+export function xSignOpen(
+    signedMessage: Uint8Array,
+    publicKey: Uint8Array,
+): null | Uint8Array {
     return nacl.sign.open(signedMessage, publicKey);
 }
 

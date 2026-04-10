@@ -1,4 +1,4 @@
-import { xDH, XUtils } from "..";
+import { xDH, XUtils } from "../index.js";
 
 test("xDH", () => {
     const myPrivateKey =

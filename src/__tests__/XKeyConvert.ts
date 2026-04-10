@@ -50,7 +50,7 @@ test("convertPrivateKey", () => {
     );
 });
 
-function keyPairFromString(strKeyPair: { private: string; public: string; }) {
+function keyPairFromString(strKeyPair: { private: string; public: string }) {
     return {
         publicKey: XUtils.decodeHex(strKeyPair.public),
         secretKey: XUtils.decodeHex(strKeyPair.private),

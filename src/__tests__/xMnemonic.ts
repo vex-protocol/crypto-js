@@ -1,4 +1,4 @@
-import { xMnemonic, XUtils } from "..";
+import { xMnemonic, XUtils } from "../index.js";
 
 test("xMnemonic", () => {
     const IKM =
