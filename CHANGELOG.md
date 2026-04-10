@@ -1,5 +1,33 @@
 # @vex-chat/crypto
 
+## 2.0.0
+
+### Major Changes
+
+- 98ef88b: Align with `@vex-chat/types@2.0.0`. **Breaking**: consumers must upgrade `@vex-chat/types` alongside this release.
+    - **Peer dependency `@vex-chat/types` bumped from `^1.0.0-rc.1` to `^2.0.0`.** The types package renamed every interface to drop the `I` prefix (`IBaseMsg` → `BaseMsg`), renamed schemas to the `XSchema` form, and migrated date fields from `Date` to ISO 8601 strings. See the `@vex-chat/types` v2 changelog for the full migration.
+    - **`XUtils.unpackMessage()` return type** changed from `[Uint8Array, IBaseMsg]` to `[Uint8Array, BaseMsg]` to track the types rename. Runtime shape unchanged.
+    - **`XUtils.packMessage(msg)` and `xHMAC(msg)` first-parameter types** narrowed from `any` to `unknown`. Consumers passing untyped values will need an explicit cast or type guard at the call site. Runtime behavior unchanged.
+    - **Deprecated `z.object().passthrough()` replaced with `.loose()`** in `unpackMessage`'s inline schema. Identical runtime semantics — silences Zod 4's deprecation warning.
+
+### Minor Changes
+
+- 2e33b45: Ship complete nacl operation wrappers as first-class exports, replacing the previous pattern of reaching into `nacl.*` directly. Callers no longer need to import `tweetnacl` themselves for the common key-generation, signing, and authenticated-encryption flows.
+    - **Key generation**: `xBoxKeyPair()`, `xBoxKeyPairFromSecret(secretKey)`, `xSignKeyPair()`, `xSignKeyPairFromSecret(secretKey)`
+    - **Signing**: `xSign(message, secretKey)`, `xSignOpen(signedMessage, publicKey)`
+    - **Authenticated encryption**: `xSecretbox(plaintext, nonce, key)`, `xSecretboxOpen(ciphertext, nonce, key)`
+    - **Randomness**: `xRandomBytes(length)`
+    - **Shared type**: new exported `KeyPair` interface
+
+    Also fixes a bug in `xMakeSalt` that could produce biased salts in certain code paths. The new implementation uses unbiased randomness throughout.
+
+- b347403: Packaging and publish-metadata cleanup visible on npmjs.com.
+    - **`src/` now ships in the npm tarball** (`files: ["dist", "src", "LICENSE"]`) for consumer auditability. Test files in `src/__tests__/**` are excluded via `tsconfig.build.json`, so the tarball grows by the production source only.
+    - **`npm publish` now attaches provenance attestation** via the GitHub Actions OIDC token. npmjs.com displays the "Published via GitHub Actions" badge next to the version, and consumers can verify the tarball was built by this exact workflow at this exact commit.
+    - **`repository` URL corrected** — 1.1.1 accidentally pointed at `vex-chat/libvex-js`; now correctly points at `vex-protocol/crypto-js`. The "Repository" link on npmjs.com lands at the right place.
+    - **Package description updated** to `"Crypto primitives for the Vex encrypted chat platform"`.
+    - **Node engine floor raised** to `>=24.0.0` (`npm >=10.0.0`). Previously unspecified; `npm install` will now warn (or fail under `engine-strict`) on older Node versions.
+
 ## 1.1.1
 
 ### Minor Changes
