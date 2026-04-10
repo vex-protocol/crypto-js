@@ -1,28 +1,39 @@
 {
     "compilerOptions": {
-        "target": "es2024",
+        "target": "es2022",
         "module": "nodenext",
         "moduleResolution": "nodenext",
-        "lib": ["es2024"],
+        "moduleDetection": "force",
+        "lib": ["es2022"],
+
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
         "outDir": "./dist",
         "rootDir": "./src",
+
         "strict": true,
         "noUncheckedIndexedAccess": true,
         "exactOptionalPropertyTypes": true,
-        "noImplicitReturns": true,
-        "noImplicitOverride": true,
-        "noFallthroughCasesInSwitch": true,
         "noPropertyAccessFromIndexSignature": true,
-        "verbatimModuleSyntax": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "allowUnusedLabels": false,
+        "allowUnreachableCode": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+
         "isolatedModules": true,
+        "verbatimModuleSyntax": true,
+        "erasableSyntaxOnly": true,
+        "noUncheckedSideEffectImports": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["node"],
-        "skipLibCheck": true,
-        "resolveJsonModule": true
+
+        "types": ["node", "vitest/globals"],
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
     "include": ["src/**/*"],
-    "exclude": ["./scripts/*", "./dist/*", "src/__tests__"]
+    "exclude": ["./scripts/*", "./dist/*"]
 }

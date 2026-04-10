@@ -1,15 +1,16 @@
-import nacl from "tweetnacl";
+import type nacl from "tweetnacl";
+
 import { XKeyConvert, XUtils } from "../index.js";
 
 const ed25519Keys = {
-    public: "8d0538a45bce3d6fd43cd80a247da063c67cd01da2e263758567a51db5b1f7c6",
     private:
         "f69c92fbb224e1d75c5dffb5e40946e6106baa89ad73dbb6ef0bec2d8562d8a28d0538a45bce3d6fd43cd80a247da063c67cd01da2e263758567a51db5b1f7c6",
+    public: "8d0538a45bce3d6fd43cd80a247da063c67cd01da2e263758567a51db5b1f7c6",
 };
 
 const convertedX25519Keys = {
-    public: "55c4ca5a1d8e2859e186f36564cc41c9c9882ed9dbc01be8ec9a36b106eeee5b",
     private: "10ed501acc2125730c294aa4b78eac989588d031015d1c77a75ea98aa7744b7a",
+    public: "55c4ca5a1d8e2859e186f36564cc41c9c9882ed9dbc01be8ec9a36b106eeee5b",
 };
 
 test("convertKeyPair", () => {
@@ -49,19 +50,19 @@ test("convertPrivateKey", () => {
     );
 });
 
-function keyPairToString(keyPair: nacl.SignKeyPair | nacl.BoxKeyPair): {
-    public: string;
-    private: string;
-} {
-    return {
-        public: XUtils.encodeHex(keyPair.publicKey),
-        private: XUtils.encodeHex(keyPair.secretKey),
-    };
-}
-
-function keyPairFromString(strKeyPair: { public: string; private: string }) {
+function keyPairFromString(strKeyPair: { private: string; public: string }) {
     return {
         publicKey: XUtils.decodeHex(strKeyPair.public),
         secretKey: XUtils.decodeHex(strKeyPair.private),
+    };
+}
+
+function keyPairToString(keyPair: nacl.BoxKeyPair | nacl.SignKeyPair): {
+    private: string;
+    public: string;
+} {
+    return {
+        private: XUtils.encodeHex(keyPair.secretKey),
+        public: XUtils.encodeHex(keyPair.publicKey),
     };
 }

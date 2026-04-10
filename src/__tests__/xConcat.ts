@@ -1,4 +1,4 @@
-import { xConcat, XUtils } from "..";
+import { xConcat, XUtils } from "../index.js";
 
 test("xConcat", () => {
     const data1 = "dead";

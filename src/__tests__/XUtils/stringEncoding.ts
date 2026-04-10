@@ -1,11 +1,11 @@
 import { XUtils } from "../../index.js";
 const {
-    encodeHex,
+    decodeBase64,
     decodeHex,
-    encodeUTF8,
     decodeUTF8,
     encodeBase64,
-    decodeBase64,
+    encodeHex,
+    encodeUTF8,
 } = XUtils;
 
 test("Encodes and decodes hex", () => {

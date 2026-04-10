@@ -1,6 +1,6 @@
 # @vex-chat/crypto
 
-## 1.1.0-rc.2
+## 1.1.1
 
 ### Minor Changes
 
@@ -35,6 +35,30 @@
     - `verbatimModuleSyntax: true` in tsconfig
     - Migrated test runner from Jest + ts-jest to Vitest (3x faster)
     - GitHub Actions workflow migrated to npm
+
+## 1.0.11-rc.11
+
+### Patch Changes
+
+- Declare `typescript >=5.9.0` as a peer dependency so consumers on the TypeScript 5.x line resolve it explicitly. No other source or dependency changes from 1.0.10-rc.8.
+
+## 1.0.10-rc.8
+
+### Patch Changes
+
+- Publish-process iteration release. No material source or dependency changes from 1.0.6-rc.4 — this range of versions (rc.2 through rc.10, not all published) represents the release-tooling and CI-workflow stabilization that ultimately converged in 1.1.0-rc.1.
+
+## 1.0.6-rc.4
+
+### Patch Changes
+
+- Publish-process iteration release. No material source or dependency changes from 1.0.3-rc.1.
+
+## 1.0.3-rc.1
+
+### Patch Changes
+
+- 7294de7: Resolve `npm audit` findings from 1.0.0-rc.0. No public API changes.
 
 ## 1.0.0-rc.0
 

@@ -1,22 +1,20 @@
 import { XUtils } from "../../index.js";
-const { numberToUint8Arr, bytesEqual } = XUtils;
+
+const { bytesEqual, numberToUint8Arr } = XUtils;
 
 test("numberToUint8Arr", () => {
-    const numbers = [
-        255, 65535, 16777215, 4294967295, 1099511627775, 281474976710655,
-    ];
-    const buffers = [
-        [0, 0, 0, 0, 0, 255],
-        [0, 0, 0, 0, 255, 255],
-        [0, 0, 0, 255, 255, 255],
-        [0, 0, 255, 255, 255, 255],
-        [0, 255, 255, 255, 255, 255],
-        [255, 255, 255, 255, 255, 255],
+    const cases: [number, number[]][] = [
+        [255, [0, 0, 0, 0, 0, 255]],
+        [65535, [0, 0, 0, 0, 255, 255]],
+        [16777215, [0, 0, 0, 255, 255, 255]],
+        [4294967295, [0, 0, 255, 255, 255, 255]],
+        [1099511627775, [0, 255, 255, 255, 255, 255]],
+        [281474976710655, [255, 255, 255, 255, 255, 255]],
     ];
 
-    for (let i = 0; i < numbers.length; i++) {
-        const arr = numberToUint8Arr(numbers[i]);
-        expect(bytesEqual(arr, Buffer.from(buffers[i]))).toBe(true);
+    for (const [number, buffer] of cases) {
+        const arr = numberToUint8Arr(number);
+        expect(bytesEqual(arr, Buffer.from(buffer))).toBe(true);
     }
 
     expect(() => numberToUint8Arr(281474976710656)).toThrow();

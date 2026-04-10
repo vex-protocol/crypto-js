@@ -1,34 +1,4 @@
 {
-    "tags": {
-        "allowUnknownTags": true
-    },
-    "plugins": [
-        "plugins/markdown",
-        "/home/ender/.npm/_npx/229717/lib/node_modules/tsdoc/template/plugins/TSDoc.js"
-    ],
-    "opts": {
-        "template": "/home/ender/.npm/_npx/229717/lib/node_modules/tsdoc/template",
-        "recurse": "true"
-    },
-    "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false
-    },
-    "source": {
-        "includePattern": "(\\.d)?\\.ts$"
-    },
-    "markdown": {
-        "parser": "gfm",
-        "hardwrap": true
-    },
-    "tsdoc": {
-        "source": "/home/ender/code/crypto-js/src/",
-        "destination": "/home/ender/code/crypto-js/docs",
-        "tutorials": "",
-        "systemName": "crypto-js",
-        "footer": "",
-        "copyright": "crypto-js Copyright © 2020 ender.",
-        "outputSourceFiles": true,
-        "commentsOnly": true
-    }
+    "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    "extends": ["@microsoft/api-extractor/extends/tsdoc-base.json"]
 }
