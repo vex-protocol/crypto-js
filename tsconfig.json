@@ -30,7 +30,7 @@
         "noUncheckedSideEffectImports": true,
         "forceConsistentCasingInFileNames": true,
 
-        "types": ["node"],
+        "types": ["node", "vitest/globals"],
         "resolveJsonModule": true,
         "skipLibCheck": true
     },

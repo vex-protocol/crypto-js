@@ -5,6 +5,12 @@ docs
 .env
 *.tgz
 
+# api-extractor scratch dir (only api/ is the committed report)
+temp/
+
+# License checker failure reports
+license-error-*.md
+
 # Wrong lockfiles / package managers
 yarn.lock
 pnpm-lock.yaml
