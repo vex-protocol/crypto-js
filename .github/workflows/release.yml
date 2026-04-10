@@ -60,7 +60,7 @@ jobs:
             # works with either auth method).
             - name: Create Release PR or Publish
               id: changesets
-              uses: changesets/action@e87c8ed249971350e47fab7515075f44eb134e5b # v1.7.0
+              uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1.7.0
               with:
                   publish: npx changeset publish --provenance --access public
                   title: "chore: version packages"
@@ -73,7 +73,7 @@ jobs:
               if: steps.changesets.outputs.published == 'true'
               run: npx @cyclonedx/cyclonedx-npm --output-file sbom.json
 
-            - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+            - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
               if: steps.changesets.outputs.published == 'true'
               with:
                   name: sbom-${{ github.sha }}
