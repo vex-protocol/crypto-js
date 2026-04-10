@@ -4,33 +4,43 @@ on:
     pull_request:
         types: [opened, synchronize]
 
+concurrency:
+    group: auto-changeset-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
 jobs:
     generate-changeset:
         if: |
             github.event.pull_request.user.type != 'Bot' &&
-            !startsWith(github.event.pull_request.title, 'chore: version packages')
+            !startsWith(github.event.pull_request.title, 'chore: version packages') &&
+            github.event.pull_request.head.repo.full_name == github.repository
         runs-on: ubuntu-latest
         permissions:
             contents: write
             pull-requests: write
+            id-token: write
         steps:
             - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176  # v2.17.0
+              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
               with:
                   egress-policy: audit
 
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
                   fetch-depth: 0
                   ref: ${{ github.head_ref }}
 
-            - uses: pnpm/action-setup@b307475762933b98ed359c036b0e51f26b63b74b  # v5.0.0
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f  # v6.3.0
+            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
               with:
-                  node-version: 24
+                  node-version-file: .tool-versions
                   cache: npm
 
             - run: npm ci --ignore-scripts
+
+            - name: Configure git
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
             - name: Check existing changeset
               id: check
@@ -43,17 +53,22 @@ jobs:
 
             - name: Generate changeset with Claude
               if: steps.check.outputs.exists == 'false'
-              uses: anthropics/claude-code-action@21302532c2959a4f8f5e445004f617ef8b7b1dd7  # v1
+              uses: anthropics/claude-code-action@21302532c2959a4f8f5e445004f617ef8b7b1dd7 # v1
               with:
                   anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
                   prompt: |
                       You are a release engineer. Analyze the git diff of this PR and generate
-                      a changeset file for the @changesets/cli tool.
+                      a changeset file for the @changesets/cli tool, then commit and push it
+                      so the PR picks it up.
 
                       Instructions:
                       1. Run `git diff origin/master...HEAD` to see all changes
                       2. Read package.json for the package name
                       3. Determine semver bump: patch (bugfix), minor (feature), major (breaking)
                       4. Write a 1-3 sentence user-facing summary (impact, not implementation)
-                      5. Create the changeset file and commit it
-                  allowed_tools: "Bash(git diff:*),Bash(git add:*),Bash(git commit:*),Bash(cat:*),Read,Write"
+                      5. Write the changeset file to `.changeset/<short-slug>.md` with frontmatter
+                         `---\n"<package-name>": <bump>\n---` followed by the summary
+                      6. Stage the file, commit with message `chore: add changeset`, and push
+                         to `HEAD:${{ github.head_ref }}`
+                  claude_args: |
+                      --allowedTools "Bash(git diff:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(cat:*),Read,Write"
