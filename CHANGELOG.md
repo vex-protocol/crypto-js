@@ -1,6 +1,6 @@
 # @vex-chat/crypto
 
-## 1.1.0-rc.2
+## 1.1.1
 
 ### Minor Changes
 
