@@ -52,7 +52,7 @@
         }
     },
     "dependencies": {
-        "@noble/hashes": "2.0.1",
+        "@noble/hashes": "2.2.0",
         "@stablelib/base64": "2.0.1",
         "@stablelib/utf8": "2.1.0",
         "bip39": "3.1.0",
