@@ -44,6 +44,7 @@ export class XUtils {
 
     /**
      * Checks if two buffer-like objects are equal.
+     * When lengths match, comparison is constant-time in the inputs (no early exit on first differing byte).
      *
      * @param buf1
      * @param buf2
@@ -59,12 +60,16 @@ export class XUtils {
         if (a.byteLength !== b.byteLength) {
             return false;
         }
+        let diff = 0;
         for (let i = 0; i !== a.byteLength; i++) {
-            if (a[i] !== b[i]) {
+            const x = a[i];
+            const y = b[i];
+            if (x === undefined || y === undefined) {
                 return false;
             }
+            diff |= x ^ y;
         }
-        return true;
+        return diff === 0;
     }
 
     /**
