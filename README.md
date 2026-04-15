@@ -24,7 +24,7 @@ Crypto primitives for the [Vex](https://vex.wtf) encrypted chat platform. Sign, 
 - **Mnemonics** — `xMnemonic()` (BIP39 via `bip39`).
 - **Utilities** — `xConcat()`, `xMakeNonce()`, `xRandomBytes()`, `XUtils.bytesEqual` (constant-time when lengths match), and `XKeyConvert` (Ed25519 ↔ X25519 via `ed2curve`).
 
-**HKDF, PBKDF2, HMAC, and SHA-512 / SHA-256** all run through **`@noble/hashes`** — not Node’s built-in `crypto` module. **`tweetnacl`** supplies CSPRNG, box, sign, and secretbox. Unit tests may use Node `crypto` (e.g. `createHmac`) only as a cross-check against standard vectors.
+**HKDF, PBKDF2, HMAC, and SHA-512 / SHA-256** all run through **`@noble/hashes`**. **`tweetnacl`** supplies CSPRNG, box, sign, and secretbox.
 
 ## Install
 
@@ -79,7 +79,15 @@ const wire = XUtils.packMessage({
 const [, body] = XUtils.unpackMessage(wire);
 ```
 
-See the generated API docs at [vex-protocol.github.io/crypto-js](https://vex-protocol.github.io/crypto-js/) for the full surface.
+## API documentation
+
+HTML and JSON API reference is generated from TSDoc on `src/index.ts`:
+
+```sh
+npm run docs
+```
+
+Output is written to `./docs/` (gitignored). CI runs the same generator with `--treatWarningsAsErrors`.
 
 ## License
 

@@ -1,7 +1,10 @@
 node_modules
 dist
-docs
+docs/
 **/*.log
+
+# Vercel CLI local project link
+.vercel
 .env
 *.tgz
 

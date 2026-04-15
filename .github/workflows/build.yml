@@ -124,6 +124,8 @@ jobs:
               run: npm run lint:types
             - name: API Extractor
               run: npm run lint:api
+            - name: typedoc (no doc warnings)
+              run: npx typedoc --options typedoc.json --treatWarningsAsErrors
             - name: npm pack
               run: npm pack
             - name: Upload tarball
