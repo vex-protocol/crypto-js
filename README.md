@@ -10,7 +10,7 @@
 [![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/vex-protocol/crypto-js?style=flat-square&label=Scorecard)](https://securityscorecards.dev/viewer/?uri=github.com/vex-protocol/crypto-js)
 [![Socket](https://socket.dev/api/badge/npm/package/@vex-chat/crypto)](https://socket.dev/npm/package/@vex-chat/crypto)
 
-Crypto primitives for the [Vex](https://vex.wtf) encrypted chat platform. Sign, encrypt, hash, derive keys, and encode bytes — everything the client and server need to speak the protocol.
+Crypto primitives for the [Vex](https://vex.wtf) protocol. Sign, encrypt, hash, derive keys, and encode bytes — everything the client and server need to speak the protocol.
 
 ## What's in the box
 
@@ -78,16 +78,6 @@ const wire = XUtils.packMessage({
 });
 const [, body] = XUtils.unpackMessage(wire);
 ```
-
-## API documentation
-
-HTML and JSON API reference is generated from TSDoc on `src/index.ts`:
-
-```sh
-npm run docs
-```
-
-Output is written to `./docs/` (gitignored). CI runs the same generator with `--treatWarningsAsErrors`.
 
 ## License
 
