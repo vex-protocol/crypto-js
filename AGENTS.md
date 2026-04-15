@@ -43,7 +43,7 @@ The release pipeline is fully automated via [Changesets](https://github.com/chan
     Use `patch` for bugfixes, `minor` for backward-compatible features, `major` for breaking changes.
 
 - ✅ Edit source code in `src/`, scripts, workflows, configs, tests, README, and this file.
-- ✅ Run `npm run build`, `npm run lint`, `npm run test:types`, `npm test`, `npm audit`, `npx type-coverage` — all read-only w.r.t. the release flow.
+- ✅ Run `npm run build`, `npm run lint`, `npm run test:types`, `npm test`, `npm run docs`, `npm audit`, `npx type-coverage` — all read-only w.r.t. the release flow.
 
 ## What ships in the npm tarball
 
@@ -53,7 +53,7 @@ The published `@vex-chat/crypto` tarball contains only:
 - `src/` — shipped for consumer auditability (minus `src/__tests__/**` which is excluded by `tsconfig.build.json`)
 - `package.json`, `README.md`, `LICENSE`
 
-Anything else you edit — `.github/`, tsconfig files, eslint config, `src/__tests__/**` (vitest unit tests), `vitest.config.ts`, `api-extractor.json`, `tsdoc.json`, `typedoc.json`, `mise.toml`, `.tool-versions`, `AGENTS.md`, `CHANGELOG.md` itself — is NOT in the tarball's footprint and is NOT user-visible. PRs touching only those files should ship an **empty changeset** (`---\n---\n`) so the release flow records "nothing to publish."
+Anything else you edit — `.github/`, tsconfig files, eslint config, `src/__tests__/**` (vitest unit tests), `vitest.config.ts`, `api-extractor.json`, `typedoc.json`, `mise.toml`, `.tool-versions`, `AGENTS.md`, `CHANGELOG.md` itself — is NOT in the tarball's footprint and is NOT user-visible. PRs touching only those files should ship an **empty changeset** (`---\n---\n`) so the release flow records "nothing to publish."
 
 ## Generated / machine-owned files
 
@@ -66,7 +66,7 @@ Treat these as **outputs**, not sources. The source of truth is listed in parent
 | `package-lock.json`      | `package.json` + registry | `npm install` / `npm ci` |
 | `api/crypto.api.md`      | public type surface       | `npm run lint:api`       |
 | `dist/`                  | `src/`                    | `npm run build`          |
-| `docs/`                  | `src/` + TSDoc comments   | `npx typedoc` (local)    |
+| `docs/`                  | `src/` + TSDoc comments   | `npm run docs`           |
 
 ## Dependabot PRs
 

@@ -28,8 +28,22 @@ export function xBoxKeyPairFromSecret(secretKey: Uint8Array): KeyPair;
 // @public
 export function xConcat(...arrays: Uint8Array[]): Uint8Array;
 
-// Warning: (ae-forgotten-export) The symbol "XConstants" needs to be exported by the entry point index.d.ts
-//
+// @public
+export interface XConstants {
+    // (undocumented)
+    CURVE: "X25519";
+    // (undocumented)
+    HASH: "SHA-512";
+    // (undocumented)
+    HEADER_SIZE: 32;
+    // (undocumented)
+    INFO: string;
+    // (undocumented)
+    KEY_LENGTH: 32 | 57;
+    // (undocumented)
+    MIN_OTK_SUPPLY: number;
+}
+
 // @public
 export const xConstants: XConstants;
 

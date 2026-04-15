@@ -1,5 +1,11 @@
 {
     "out": "docs",
+    "json": "docs/api.json",
+    "emit": "both",
+    "tsconfig": "./tsconfig.build.json",
+    "entryPoints": ["./src/index.ts"],
     "excludeExternals": true,
-    "excludePrivate": true
+    "excludeInternal": true,
+    "excludePrivate": true,
+    "exclude": ["**/src/__tests__/**"]
 }

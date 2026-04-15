@@ -7,7 +7,6 @@
 [![Types](https://img.shields.io/npm/types/@vex-chat/crypto?style=flat-square&logo=typescript&color=3178c6)](./dist/index.d.ts)
 [![Type Coverage](https://img.shields.io/badge/dynamic/json?style=flat-square&label=type-coverage&prefix=%E2%89%A5&suffix=%25&query=$.typeCoverage.atLeast&url=https://raw.githubusercontent.com/vex-protocol/crypto-js/master/package.json&color=3178c6&logo=typescript)](https://github.com/plantain-00/type-coverage)
 [![Node](https://img.shields.io/node/v/@vex-chat/crypto?style=flat-square&color=339933&logo=nodedotjs)](./package.json)
-[![Bundle](https://deno.bundlejs.com/badge?q=@vex-chat/crypto&treeshake=[*])](https://bundlejs.com/?q=@vex-chat/crypto&treeshake=[*])
 [![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/vex-protocol/crypto-js?style=flat-square&label=Scorecard)](https://securityscorecards.dev/viewer/?uri=github.com/vex-protocol/crypto-js)
 [![Socket](https://socket.dev/api/badge/npm/package/@vex-chat/crypto)](https://socket.dev/npm/package/@vex-chat/crypto)
 
@@ -15,15 +14,17 @@ Crypto primitives for the [Vex](https://vex.wtf) encrypted chat platform. Sign, 
 
 ## What's in the box
 
-- **Key generation** — `xBoxKeyPair()` / `xSignKeyPair()` / `xSignKeyPairFromSecret()` / `xBoxKeyPairFromSecret()` for X25519 (encryption) and Ed25519 (signing) keypairs.
-- **Signing** — `xSign()` / `xSignVerify()` over arbitrary bytes using Ed25519.
-- **Authenticated encryption** — `xSecretbox()` / `xSecretboxOpen()` (NaCl secretbox) plus `xDH()` for Diffie-Hellman shared secrets.
-- **Hashing & KDF** — `xHash()` (SHA-512), `xKDF()` (HKDF-SHA256 via `@noble/hashes`), `xHMAC()`, and PBKDF2.
-- **Encoding** — `xEncode()` / `xDecode()` for msgpack wire serialization; `XUtils.encodeBase64` / `encodeUTF8` for constant-time transport encoding.
-- **Mnemonic keys** — `xMnemonic()` (BIP39) for deriving keys from human-readable phrases.
-- **Utilities** — `xConcat()`, `xMakeNonce()`, `xRandomBytes()`, and `XKeyConvert` (Ed25519 ↔ X25519 conversion via `ed2curve`).
+- **Key generation** — `xBoxKeyPair()` / `xSignKeyPair()` / `xSignKeyPairFromSecret()` / `xBoxKeyPairFromSecret()` for X25519 (box) and Ed25519 (sign) keypairs (`tweetnacl`).
+- **Signing** — `xSign()` / `xSignOpen()` over arbitrary bytes (Ed25519, `tweetnacl`).
+- **Authenticated encryption** — `xSecretbox()` / `xSecretboxOpen()` (XSalsa20-Poly1305 secretbox) and `xDH()` (X25519 scalar mult) via `tweetnacl`.
+- **Hashing & KDF** — `xHash()` (SHA-512 hex via `@noble/hashes`), `xKDF()` (**HKDF-SHA-512** via `@noble/hashes`), `xHMAC()` (HMAC-SHA-256 via `@noble/hashes`), and `XUtils.encryptKeyData` / `decryptKeyData` (**PBKDF2-SHA-512** + `tweetnacl` secretbox).
+- **Curve key encoding** — `xEncode()` prefixes a 32-byte X25519 public key for the wire format (not msgpack).
+- **Msgpack framing** — `XUtils.packMessage()` / `unpackMessage()` wrap a 32-byte header + msgpack body (`msgpackr`); `unpackMessage` validates base fields with Zod.
+- **Text & byte encoding** — `XUtils` hex/base64/UTF-8 helpers (`@stablelib/base64`, `@stablelib/utf8`).
+- **Mnemonics** — `xMnemonic()` (BIP39 via `bip39`).
+- **Utilities** — `xConcat()`, `xMakeNonce()`, `xRandomBytes()`, `XUtils.bytesEqual` (constant-time when lengths match), and `XKeyConvert` (Ed25519 ↔ X25519 via `ed2curve`).
 
-All primitives use constant-time operations where relevant. Native Node crypto is used for HKDF/PBKDF2/HMAC/SHA; `tweetnacl` and `@noble/hashes` cover the rest.
+**HKDF, PBKDF2, HMAC, and SHA-512 / SHA-256** all run through **`@noble/hashes`**. **`tweetnacl`** supplies CSPRNG, box, sign, and secretbox.
 
 ## Install
 
@@ -44,12 +45,11 @@ import {
     xBoxKeyPair,
     xSignKeyPair,
     xSign,
+    xSignOpen,
     xSecretbox,
     xSecretboxOpen,
     xDH,
     xMakeNonce,
-    xEncode,
-    xDecode,
     XUtils,
 } from "@vex-chat/crypto";
 
@@ -57,9 +57,10 @@ import {
 const signKeys = xSignKeyPair();
 const boxKeys = xBoxKeyPair();
 
-// Sign a message
+// Sign a message (returns 64-byte signature prefix + message)
 const message = XUtils.encodeUTF8("hello vex");
-const signature = xSign(message, signKeys.secretKey);
+const signed = xSign(message, signKeys.secretKey);
+const opened = xSignOpen(signed, signKeys.publicKey);
 
 // Derive a shared secret and encrypt
 const shared = xDH(boxKeys.secretKey, otherPartyPublicKey);
@@ -69,12 +70,24 @@ const ciphertext = xSecretbox(message, nonce, shared);
 // Decrypt
 const plaintext = xSecretboxOpen(ciphertext, nonce, shared);
 
-// msgpack wire encoding
-const frame = xEncode({ type: "success", transmissionID: "abc", data: null });
-const decoded = xDecode(frame);
+// Msgpack wire body (32-byte header + msgpack); see XUtils.packMessage / unpackMessage
+const wire = XUtils.packMessage({
+    type: "success",
+    transmissionID: "abc",
+    data: null,
+});
+const [, body] = XUtils.unpackMessage(wire);
 ```
 
-See the generated API docs at [vex-chat.github.io/crypto-js](https://vex-chat.github.io/crypto-js/) for the full surface.
+## API documentation
+
+HTML and JSON API reference is generated from TSDoc on `src/index.ts`:
+
+```sh
+npm run docs
+```
+
+Output is written to `./docs/` (gitignored). CI runs the same generator with `--treatWarningsAsErrors`.
 
 ## License
 

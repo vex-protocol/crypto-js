@@ -44,6 +44,7 @@ export class XUtils {
 
     /**
      * Checks if two buffer-like objects are equal.
+     * When lengths match, comparison is constant-time in the inputs (no early exit on first differing byte).
      *
      * @param buf1
      * @param buf2
@@ -59,12 +60,16 @@ export class XUtils {
         if (a.byteLength !== b.byteLength) {
             return false;
         }
+        let diff = 0;
         for (let i = 0; i !== a.byteLength; i++) {
-            if (a[i] !== b[i]) {
+            const x = a[i];
+            const y = b[i];
+            if (x === undefined || y === undefined) {
                 return false;
             }
+            diff |= x ^ y;
         }
-        return true;
+        return diff === 0;
     }
 
     /**
@@ -135,21 +140,17 @@ export class XUtils {
     }
 
     /**
-   * Encrypts a secret key with a password and saves it as a file.
-   *
-   * @param path The path to save the keyfile.
-  /**
-   * Encrypts a secret key into a portable binary format.
-   * The result can be written to disk, sent over the network, etc.
-   * No I/O — the caller handles persistence.
-   *
-   * Format: [iterations(6)|salt(24)|nonce(24)|ciphertext(N)]
-   *
-   * @param password The password to derive the encryption key from.
-   * @param keyToSave The hex-encoded secret key to encrypt.
-   * @param iterationOverride Optional PBKDF2 iteration count (random if omitted).
-   * @returns The encrypted key data as a Uint8Array.
-   */
+     * Encrypts a secret key into a portable binary format.
+     * The result can be written to disk, sent over the network, etc.
+     * No I/O — the caller handles persistence.
+     *
+     * Format: [iterations(6)|salt(24)|nonce(24)|ciphertext(N)]
+     *
+     * @param password The password to derive the encryption key from.
+     * @param keyToSave The hex-encoded secret key to encrypt.
+     * @param iterationOverride Optional PBKDF2 iteration count (random if omitted).
+     * @returns The encrypted key data as a Uint8Array.
+     */
     public static encryptKeyData = (
         password: string,
         keyToSave: string,
@@ -219,7 +220,8 @@ export class XUtils {
     /**
      * Packs a javascript object and a 32 byte header into a vex message.
      *
-     * @param arr The array to convert.
+     * @param msg Message body (msgpack-serialized).
+     * @param header Optional 32-byte header; defaults to an empty header.
      * @returns the packed message.
      */
     public static packMessage(msg: unknown, header?: Uint8Array) {
@@ -244,9 +246,9 @@ export class XUtils {
 
     /**
      * Takes a vex message and unpacks it into its header and a javascript object
-     * respresentation of its body.
+     * representation of its body.
      *
-     * @param arr The array to convert.
+     * @param msg Full wire message (32-byte header + msgpack body).
      * @returns [32 byte header, message body]
      */
     public static unpackMessage(
@@ -323,10 +325,8 @@ export interface KeyPair {
 //     );
 // }
 
-/**
- * @ignore
- */
-interface XConstants {
+/** Shape of the {@link xConstants} runtime object. */
+export interface XConstants {
     CURVE: "X25519";
     HASH: "SHA-512";
     HEADER_SIZE: 32;
@@ -513,7 +513,7 @@ export function xSignOpen(
 }
 
 /**
- * @ignore
+ * @internal
  */
 function isEven(value: bigint) {
     if (value % BigInt(2) === BigInt(0)) {
@@ -524,14 +524,14 @@ function isEven(value: bigint) {
 }
 
 /**
- * @ignore
+ * @internal
  */
 function keyLength(curve: "X448" | "X25519"): number {
     return curve === "X25519" ? 32 : 57;
 }
 
 /**
- * @ignore
+ * @internal
  */
 function xMakeSalt(curve: "X448" | "X25519"): Uint8Array {
     const salt = new Uint8Array(keyLength(curve));
