@@ -79,6 +79,8 @@ const wire = XUtils.packMessage({
 const [, body] = XUtils.unpackMessage(wire);
 ```
 
+Outside contributors should follow [CONTRIBUTING.md](./CONTRIBUTING.md) (including the [CLA](./CLA.md)). Release workflow: [AGENTS.md](./AGENTS.md).
+
 ## License
 
-[AGPL-3.0-or-later](./LICENSE)
+Default public license: **[AGPL-3.0](./LICENSE)** (see `package.json` for SPDX). Commercial licenses from **Vex Heavy Industries LLC**: [**LICENSE-COMMERCIAL**](./LICENSE-COMMERCIAL), [**LICENSING.md**](./LICENSING.md).
