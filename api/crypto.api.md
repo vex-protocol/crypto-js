@@ -12,6 +12,12 @@ import { encode } from '@stablelib/utf8';
 import { encode as encode_2 } from '@stablelib/base64';
 
 // @public
+export type CryptoProfile = "fips" | "tweetnacl";
+
+// @public
+export function getCryptoProfile(): CryptoProfile;
+
+// @public
 export interface KeyPair {
     // (undocumented)
     publicKey: Uint8Array;
@@ -20,10 +26,19 @@ export interface KeyPair {
 }
 
 // @public
+export function setCryptoProfile(profile: CryptoProfile): void;
+
+// @public
 export function xBoxKeyPair(): KeyPair;
 
 // @public
+export function xBoxKeyPairAsync(): Promise<KeyPair>;
+
+// @public
 export function xBoxKeyPairFromSecret(secretKey: Uint8Array): KeyPair;
+
+// @public
+export function xBoxKeyPairFromSecretAsync(secretKey: Uint8Array): Promise<KeyPair>;
 
 // @public
 export function xConcat(...arrays: Uint8Array[]): Uint8Array;
@@ -51,13 +66,24 @@ export const xConstants: XConstants;
 export function xDH(myPrivateKey: Uint8Array, theirPublicKey: Uint8Array): Uint8Array;
 
 // @public
+export function xDHAsync(myPrivateKey: Uint8Array, theirPublicKey: Uint8Array): Promise<Uint8Array>;
+
+// @public
+export function xEcdhKeyPairFromEcdsaKeyPairAsync(sign: KeyPair): Promise<KeyPair>;
+
+// @public
+export function fipsEcdhRawPublicKeyFromEcdsaSpkiAsync(
+    ecdsaSpki: Uint8Array,
+): Promise<Uint8Array>;
+
+// @public
 export function xEncode(curveType: "X448" | "X25519", publicKey: Uint8Array): Uint8Array;
 
 // @public
 export function xHash(data: Uint8Array): string;
 
 // @public
-export function xHMAC(msg: unknown, SK: Uint8Array): Uint8Array<ArrayBufferLike>;
+export function xHMAC(msg: unknown, SK: Uint8Array): Uint8Array<ArrayBufferLike> & Uint8Array<ArrayBuffer>;
 
 // @public (undocumented)
 export function xKDF(IKM: Uint8Array): Uint8Array;
@@ -78,19 +104,37 @@ export function xRandomBytes(length: number): Uint8Array;
 export function xSecretbox(plaintext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array;
 
 // @public
+export function xSecretboxAsync(plaintext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Promise<Uint8Array>;
+
+// @public
 export function xSecretboxOpen(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): null | Uint8Array;
+
+// @public
+export function xSecretboxOpenAsync(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Promise<null | Uint8Array>;
 
 // @public
 export function xSign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
 
 // @public
+export function xSignAsync(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+
+// @public
 export function xSignKeyPair(): KeyPair;
+
+// @public
+export function xSignKeyPairAsync(): Promise<KeyPair>;
 
 // @public
 export function xSignKeyPairFromSecret(secretKey: Uint8Array): KeyPair;
 
 // @public
+export function xSignKeyPairFromSecretAsync(secretKey: Uint8Array): Promise<KeyPair>;
+
+// @public
 export function xSignOpen(signedMessage: Uint8Array, publicKey: Uint8Array): null | Uint8Array;
+
+// @public
+export function xSignOpenAsync(signedMessage: Uint8Array, publicKey: Uint8Array): Promise<null | Uint8Array>;
 
 // @public
 export class XUtils {
@@ -101,6 +145,8 @@ export class XUtils {
     // (undocumented)
     static decodeUTF8: typeof encode;
     static decryptKeyData: (keyData: Uint8Array, password: string) => string;
+    static decryptKeyDataAsync: (keyData: Uint8Array, password: string) => Promise<string>;
+    static deriveLocalAtRestAesKey(identitySk: Uint8Array, profile: CryptoProfile): Uint8Array;
     static emptyHeader(): Uint8Array<ArrayBuffer>;
     // (undocumented)
     static encodeBase64: typeof encode_2;
@@ -108,6 +154,7 @@ export class XUtils {
     // (undocumented)
     static encodeUTF8: typeof decode_2;
     static encryptKeyData: (password: string, keyToSave: string, iterationOverride?: number) => Uint8Array;
+    static encryptKeyDataAsync: (password: string, keyToSave: string, iterationOverride?: number) => Promise<Uint8Array>;
     static numberToUint8Arr(n: number): Uint8Array;
     static packMessage(msg: unknown, header?: Uint8Array): Uint8Array<ArrayBufferLike>;
     static uint8ArrToNumber(arr: Uint8Array): number;
