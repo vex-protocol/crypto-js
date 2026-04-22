@@ -23,6 +23,8 @@ Crypto primitives for the [Vex](https://vex.wtf) protocol. Sign, encrypt, hash, 
 - **Text & byte encoding** — `XUtils` hex/base64/UTF-8 helpers (`@stablelib/base64`, `@stablelib/utf8`).
 - **Mnemonics** — `xMnemonic()` (BIP39 via `bip39`).
 - **Utilities** — `xConcat()`, `xMakeNonce()`, `xRandomBytes()`, `XUtils.bytesEqual` (constant-time when lengths match), and `XKeyConvert` (Ed25519 ↔ X25519 via `ed2curve`).
+- **Runtime profile** — `setCryptoProfile()` / `getCryptoProfile()` to select `tweetnacl` (default) or `fips` mode.
+- **Async portable crypto** — `xSignAsync()`, `xSignOpenAsync()`, `xSignKeyPairAsync()`, `xBoxKeyPairAsync()`, `xDHAsync()`, `xSecretboxAsync()`, `xSecretboxOpenAsync()` for cross-runtime WebCrypto-backed flows.
 
 **HKDF, PBKDF2, HMAC, and SHA-512 / SHA-256** all run through **`@noble/hashes`**. **`tweetnacl`** supplies CSPRNG, box, sign, and secretbox.
 
@@ -42,6 +44,11 @@ npm install @vex-chat/types @vex-chat/crypto
 
 ```ts
 import {
+    getCryptoProfile,
+    setCryptoProfile,
+    xSignAsync,
+    xSignOpenAsync,
+    xSignKeyPairAsync,
     xBoxKeyPair,
     xSignKeyPair,
     xSign,
@@ -52,6 +59,10 @@ import {
     xMakeNonce,
     XUtils,
 } from "@vex-chat/crypto";
+
+// Optional: select backend profile once at process startup.
+setCryptoProfile("tweetnacl");
+console.log(getCryptoProfile()); // "tweetnacl"
 
 // Generate identity keys
 const signKeys = xSignKeyPair();
@@ -77,7 +88,20 @@ const wire = XUtils.packMessage({
     data: null,
 });
 const [, body] = XUtils.unpackMessage(wire);
+
+// Cross-runtime async path (required for full FIPS profile usage)
+setCryptoProfile("fips");
+const fipsKeys = await xSignKeyPairAsync();
+const fipsSigned = await xSignAsync(message, fipsKeys.secretKey);
+const fipsOpened = await xSignOpenAsync(fipsSigned, fipsKeys.publicKey);
 ```
+
+## Crypto profiles
+
+- `tweetnacl` (default): current behavior for signing, key exchange, secretbox, and random bytes.
+- `fips`:
+    - sync NaCl-shaped APIs (`xSign`, `xDH`, `xSecretbox`, etc.) still throw (to avoid silent semantic drift),
+    - async APIs (`...Async`) use WebCrypto-backed P-256 ECDSA, P-256 ECDH, and AES-GCM, plus WebCrypto random bytes.
 
 Outside contributors should follow [CONTRIBUTING.md](./CONTRIBUTING.md) (including the [CLA](./CLA.md)). Release workflow: [AGENTS.md](./AGENTS.md).
 
