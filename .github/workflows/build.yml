@@ -16,122 +16,70 @@ env:
     npm_config_engine_strict: "true"
 
 jobs:
-    # ── Parallel checks — each job independent, each reports its own status ──
-
-    build:
-        name: Build
+    # One runner: a single `npm ci`, then every check in sequence. Slower than a
+    # job matrix, but no redundant installs.
+    ci:
+        name: CI
         runs-on: ubuntu-latest
         steps:
             - name: Harden Runner
               uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
               with:
                   egress-policy: audit
+
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
+                  # Full history: changeset check compares to origin/master.
+                  fetch-depth: 0
                   persist-credentials: false
+
             - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
               with:
                   node-version-file: .tool-versions
                   cache: npm
-            - run: npm ci --ignore-scripts
+
+            - name: Install dependencies
+              run: npm ci --ignore-scripts
+
             - name: tsc
               run: npm run build
 
-    lint:
-        name: Lint
-        runs-on: ubuntu-latest
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
-              with:
-                  egress-policy: audit
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-              with:
-                  persist-credentials: false
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-              with:
-                  node-version-file: .tool-versions
-                  cache: npm
-            - run: npm ci --ignore-scripts
             - name: ESLint
               run: npm run lint
+
             - name: Prettier
               run: npm run format:check
+
             - name: npm-package-json-lint
               run: npx npm-package-json-lint .
 
-    types:
-        name: Types
-        runs-on: ubuntu-latest
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
-              with:
-                  egress-policy: audit
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-              with:
-                  persist-credentials: false
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-              with:
-                  node-version-file: .tool-versions
-                  cache: npm
-            - run: npm ci --ignore-scripts
-            - name: Type tests
+            - name: Typecheck (tsc --noEmit)
               run: npm run test:types
+
             - name: Type coverage
               run: npx type-coverage
 
-    test:
-        name: Test
-        runs-on: ubuntu-latest
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
-              with:
-                  egress-policy: audit
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-              with:
-                  persist-credentials: false
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-              with:
-                  node-version-file: .tool-versions
-                  cache: npm
-            - run: npm ci --ignore-scripts
-            # Split: default `npm test` runs both Vitest projects; here we surface
-            # `core` (sync + utility tests) vs `async-api` (tweetnacl + FIPS async) in the UI.
             - name: Vitest (core)
               run: npm run test:core
+
             - name: Vitest (async API, tweetnacl + FIPS)
               run: npm run test:async-api
 
-    package:
-        name: Package
-        runs-on: ubuntu-latest
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
-              with:
-                  egress-policy: audit
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-              with:
-                  persist-credentials: false
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-              with:
-                  node-version-file: .tool-versions
-                  cache: npm
-            - run: npm ci --ignore-scripts
-            - name: Build
-              run: npm run build
             - name: publint
               run: npm run lint:pkg
+
             - name: Are The Types Wrong?
               run: npm run lint:types
+
             - name: API Extractor
               run: npm run lint:api
+
             - name: typedoc (no doc warnings)
               run: npx typedoc --options typedoc.json --treatWarningsAsErrors
+
             - name: npm pack
               run: npm pack
+
             - name: Upload tarball
               uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
               with:
@@ -139,49 +87,18 @@ jobs:
                   path: "*.tgz"
                   retention-days: 14
 
-    supply-chain:
-        name: Supply Chain
-        runs-on: ubuntu-latest
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
-              with:
-                  egress-policy: audit
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-              with:
-                  persist-credentials: false
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-              with:
-                  node-version-file: .tool-versions
-                  cache: npm
-            - run: npm ci --ignore-scripts
             - name: License check
               run: npm run license:check
+
             - name: npm audit
               run: npm audit --audit-level=high
+
             - name: Socket security scan
               if: github.event.pull_request.head.repo.full_name == github.repository
               run: npx @socketsecurity/cli@latest ci
               env:
                   SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_API_KEY }}
 
-    changeset:
-        name: Changeset
-        runs-on: ubuntu-latest
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
-              with:
-                  egress-policy: audit
-            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-              with:
-                  fetch-depth: 0
-                  persist-credentials: false
-            - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-              with:
-                  node-version-file: .tool-versions
-                  cache: npm
-            - run: npm ci --ignore-scripts
             # Dependabot PRs merge without a changeset; they can't access
             # ANTHROPIC_API_KEY (dependabot secrets are isolated) so
             # auto-changeset can't run on them, and they don't need their
@@ -197,30 +114,3 @@ jobs:
                   else
                       echo "package.json version bumped ($OLD → $NEW) — skipping changeset check."
                   fi
-
-    # ── Single aggregator — the only required status check ─────────────────
-
-    ci-ok:
-        name: CI OK
-        if: always()
-        needs:
-            - build
-            - lint
-            - types
-            - test
-            - package
-            - supply-chain
-            - changeset
-        runs-on: ubuntu-latest
-        steps:
-            - name: Fail if any upstream job failed, was skipped, or cancelled
-              if: >-
-                  ${{ contains(needs.*.result, 'failure')
-                      || contains(needs.*.result, 'cancelled')
-                      || contains(needs.*.result, 'skipped') }}
-              run: |
-                  echo "One or more CI jobs did not succeed:"
-                  echo '${{ toJSON(needs) }}'
-                  exit 1
-            - name: All checks passed
-              run: echo "All CI jobs succeeded."
