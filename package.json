@@ -43,6 +43,8 @@
         "lint:api": "api-extractor run --local --verbose",
         "docs": "npx typedoc --options typedoc.json",
         "test": "vitest run",
+        "test:core": "vitest run --project core",
+        "test:async-api": "vitest run --project async-api",
         "test:types": "tsc --noEmit",
         "prepublish": "npm run build"
     },

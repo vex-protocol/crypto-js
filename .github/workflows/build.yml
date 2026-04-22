@@ -97,8 +97,12 @@ jobs:
                   node-version-file: .tool-versions
                   cache: npm
             - run: npm ci --ignore-scripts
-            - name: Vitest
-              run: npm test
+            # Split: default `npm test` runs both Vitest projects; here we surface
+            # `core` (sync + utility tests) vs `async-api` (tweetnacl + FIPS async) in the UI.
+            - name: Vitest (core)
+              run: npm run test:core
+            - name: Vitest (async API, tweetnacl + FIPS)
+              run: npm run test:async-api
 
     package:
         name: Package

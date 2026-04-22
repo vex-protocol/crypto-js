@@ -43,7 +43,7 @@ The release pipeline is fully automated via [Changesets](https://github.com/chan
     Use `patch` for bugfixes, `minor` for backward-compatible features, `major` for breaking changes.
 
 - ✅ Edit source code in `src/`, scripts, workflows, configs, tests, README, and this file.
-- ✅ Run `npm run build`, `npm run lint`, `npm run test:types`, `npm test`, `npm run docs`, `npm audit`, `npx type-coverage` — all read-only w.r.t. the release flow.
+- ✅ Run `npm run build`, `npm run lint`, `npm run test:types`, `npm test`, `npm run test:core`, `npm run test:async-api`, `npm run docs`, `npm audit`, `npx type-coverage` — all read-only w.r.t. the release flow. (`vitest` uses two projects, `core` and `async-api`, so the full default is still `npm test`; GitHub Actions runs the two project commands as separate steps.)
 
 ## What ships in the npm tarball
 
