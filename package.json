@@ -94,6 +94,9 @@
     "directories": {
         "doc": "docs"
     },
+    "overrides": {
+        "postcss": "8.5.10"
+    },
     "typeCoverage": {
         "atLeast": 100,
         "strict": true,
